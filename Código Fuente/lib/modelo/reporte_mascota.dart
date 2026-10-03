@@ -1,5 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+/// Modelo de dominio que representa el reporte de una mascota perdida.
+///
+/// Contiene la información descriptiva del animal, coordenadas geográficas,
+/// archivos multimedia y el vector de características (embeddings) para
+/// comparación mediante visión computacional.
 class ReporteMascota {
   String id;
+  String usuarioId;
+  String estado;
+  DateTime? fechaRegistro;
   String nombre;
   String tipo;
   String raza;
@@ -7,21 +17,23 @@ class ReporteMascota {
   String fechaPerdida;
   String horaPerdida;
   String direccion;
-  String distrito; // 🆕 nuevo campo
-  double? latitud; // 🆕 nuevo campo
-  double? longitud; // 🆕 nuevo campo
+  String distrito;
+  double? latitud;
+  double? longitud;
   String referencia;
   String circunstancia;
   String detalles;
   int recompensaPataCoins;
-  // 🏆 Recompensa personal del dueño
-  String montoRecompensa;   // ej. "S/. 200" o vacío si no ofrece
-  List<String> fotos; // imágenes
-  List<String> videos; // videos de máx 10 seg
-  List<double> embedding; // 🧠 nuevo campo IA
+  String montoRecompensa;
+  List<String> fotos;
+  List<String> videos;
+  List<double> embedding;
 
   ReporteMascota({
     this.id = "",
+    this.usuarioId = "",
+    this.estado = "Perdido",
+    this.fechaRegistro,
     this.nombre = "",
     this.tipo = "",
     this.raza = "",
@@ -48,6 +60,11 @@ class ReporteMascota {
   Map<String, dynamic> toMap() {
     return {
       "id": id,
+      "usuarioId": usuarioId,
+      "estado": estado,
+      "fechaRegistro": fechaRegistro != null
+          ? Timestamp.fromDate(fechaRegistro!)
+          : null,
       "nombre": nombre,
       "tipo": tipo,
       "raza": raza,
@@ -73,6 +90,11 @@ class ReporteMascota {
   factory ReporteMascota.fromMap(Map<String, dynamic> map) {
     return ReporteMascota(
       id: map["id"] ?? "",
+      usuarioId: map["usuarioId"] ?? "",
+      estado: map["estado"] ?? "Perdido",
+      fechaRegistro: map["fechaRegistro"] is Timestamp
+          ? (map["fechaRegistro"] as Timestamp).toDate()
+          : null,
       nombre: map["nombre"] ?? "",
       tipo: map["tipo"] ?? "",
       raza: map["raza"] ?? "",

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 class AdminUsuarioModel {
   final String uid;
@@ -21,15 +22,32 @@ class AdminUsuarioModel {
     this.activo = true,
   });
 
+  /// Desglosa una cadena de nombre completo en nombre y apellido de forma pura (9.1).
+  static (String, String) _desglosarNombreYApellido(String nombreCompleto) {
+    final partes = nombreCompleto
+        .trim()
+        .split(RegExp(r'\s+'))
+        .where((p) => p.isNotEmpty)
+        .toList();
+    if (partes.isEmpty) return ('', '');
+    if (partes.length == 1) return (partes[0], '');
+    if (partes.length == 2) return (partes[0], partes[1]);
+    if (partes.length == 3) return ('${partes[0]} ${partes[1]}', partes[2]);
+    return ('${partes[0]} ${partes[1]}', partes.sublist(2).join(' '));
+  }
+
   // ✅ Crear desde Map (para compatibilidad con fromMap)
   factory AdminUsuarioModel.fromMap(Map<String, dynamic> data, String uid) {
     return AdminUsuarioModel.fromFirestore(data, uid);
   }
 
   // Crear desde Firestore con manejo robusto de datos
-  factory AdminUsuarioModel.fromFirestore(Map<String, dynamic> data, String uid) {
+  factory AdminUsuarioModel.fromFirestore(
+    Map<String, dynamic> data,
+    String uid,
+  ) {
     DateTime fechaRegistro = DateTime.now();
-    
+
     if (data['fechaRegistro'] != null) {
       try {
         final fechaData = data['fechaRegistro'];
@@ -39,79 +57,40 @@ class AdminUsuarioModel {
           fechaRegistro = DateTime.parse(fechaData);
         }
       } catch (e) {
-        print('Error al parsear fecha: $e');
+        debugPrint('Error al parsear fecha: $e');
         fechaRegistro = DateTime.now();
       }
     }
-    
-    // Intentar múltiples variaciones de nombres de campos
-    String nombre = '';
-    String apellido = '';
-    String email = '';
-    
-    // Para apellido: buscar primero en los campos directos
-    apellido = (data['apellido'] ?? 
-                data['apellidos'] ?? 
-                data['lastName'] ?? 
-                data['apellidoPaterno'] ?? 
-                '').toString();
-    
-    // Para nombre: buscar en campos directos
-    nombre = (data['nombre'] ?? 
-              data['nombres'] ?? 
-              data['name'] ?? 
-              '').toString();
-    
-    // Si apellido está vacío pero nombre tiene múltiples palabras, separar
-    // según la convención mexicana de nombres
-    if (apellido.isEmpty && nombre.isNotEmpty && nombre.contains(' ')) {
-      final partes = nombre.trim().split(RegExp(r'\s+'));
-      
-      if (partes.length == 2) {
-        // Un nombre y un apellido: "YESSICA HINOJOSA"
-        nombre = partes[0];
-        apellido = partes[1];
-      } else if (partes.length == 3) {
-        // Dos nombres y un apellido: "YESSICA ANDREA HINOJOSA"
-        nombre = '${partes[0]} ${partes[1]}';
-        apellido = partes[2];
-      } else if (partes.length >= 4) {
-        // Dos nombres y dos apellidos: "YESSICA ANDREA HINOJOSA MUCHO"
-        nombre = '${partes[0]} ${partes[1]}';
-        apellido = partes.sublist(2).join(' ');
+
+    // Mapeo puro de campos directos
+    final String rawApellido =
+        (data['apellido'] ??
+                data['apellidos'] ??
+                data['lastName'] ??
+                data['apellidoPaterno'] ??
+                '')
+            .toString();
+
+    final String rawNombre =
+        (data['nombre'] ?? data['nombres'] ?? data['name'] ?? '').toString();
+
+    // Resolucion inmutable de nombre y apellido sin reasignaciones
+    final (String nombre, String apellido) = () {
+      if (rawApellido.isEmpty &&
+          rawNombre.isNotEmpty &&
+          rawNombre.contains(' ')) {
+        return _desglosarNombreYApellido(rawNombre);
       }
-    }
-    
-    // Si aún no hay nombre pero hay displayName, usarlo y separar
-    if (nombre.isEmpty && data['displayName'] != null) {
-      final nombreCompleto = data['displayName'].toString().trim();
-      final partes = nombreCompleto.split(RegExp(r'\s+'));
-      
-      if (partes.length == 1) {
-        // Solo un nombre: "YESSICA"
-        nombre = partes[0];
-        apellido = '';
-      } else if (partes.length == 2) {
-        // Un nombre y un apellido: "YESSICA HINOJOSA"
-        nombre = partes[0];
-        apellido = partes[1];
-      } else if (partes.length == 3) {
-        // Dos nombres y un apellido: "YESSICA ANDREA HINOJOSA"
-        nombre = '${partes[0]} ${partes[1]}';
-        apellido = partes[2];
-      } else if (partes.length >= 4) {
-        // Dos nombres y dos apellidos: "YESSICA ANDREA HINOJOSA MUCHO"
-        nombre = '${partes[0]} ${partes[1]}';
-        apellido = partes.sublist(2).join(' ');
+      if (rawNombre.isEmpty && data['displayName'] != null) {
+        return _desglosarNombreYApellido(data['displayName'].toString());
       }
-    }
-    
-    // Para email: buscar "email", "correo", "correoElectronico"
-    email = (data['email'] ?? 
-             data['correo'] ?? 
-             data['correoElectronico'] ?? 
-             '').toString();
-    
+      return (rawNombre, rawApellido);
+    }();
+
+    final String email =
+        (data['email'] ?? data['correo'] ?? data['correoElectronico'] ?? '')
+            .toString();
+
     // ✅ CRÍTICO: Mapear correctamente el campo 'activo'
     bool activo = true;
     if (data.containsKey('activo')) {
@@ -122,17 +101,15 @@ class AdminUsuarioModel {
       // Compatibilidad con tu modelo Usuario
       activo = data['estadoRol'] == 'activo';
     }
-    
+
     return AdminUsuarioModel(
       uid: uid,
       nombre: nombre,
       apellido: apellido,
       email: email,
       rol: data['rol'] ?? 'usuario',
-      telefono: (data['telefono'] ?? 
-                data['phone'] ?? 
-                data['celular'] ?? 
-                '').toString(),
+      telefono: (data['telefono'] ?? data['phone'] ?? data['celular'] ?? '')
+          .toString(),
       fechaRegistro: fechaRegistro,
       activo: activo,
     );
@@ -181,12 +158,12 @@ class AdminUsuarioModel {
       activo: activo ?? this.activo,
     );
   }
-  
+
   // Método para validar si el modelo tiene datos completos
   bool get esValido {
     return nombre.isNotEmpty && email.isNotEmpty;
   }
-  
+
   @override
   String toString() {
     return 'AdminUsuarioModel(uid: $uid, nombre: $nombre, apellido: $apellido, email: $email, rol: $rol, telefono: $telefono, activo: $activo)';

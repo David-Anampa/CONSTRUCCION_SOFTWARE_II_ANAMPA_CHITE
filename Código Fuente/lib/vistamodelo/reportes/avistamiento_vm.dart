@@ -3,14 +3,17 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:sos_mascotas/servicios/notificacion_servicio.dart';
 import 'package:sos_mascotas/servicios/servicio_tflite.dart';
+import 'package:sos_mascotas/utils/imagen_util.dart';
 import '../../modelo/avistamiento.dart';
 
+/// ViewModel para registrar un avistamiento de mascota.
+///
+/// Gestiona la subida de foto (con validación TFLite), el guardado en Firestore,
+/// la búsqueda de coincidencias con reportes cercanos y la notificación al dueño.
 class AvistamientoVM extends ChangeNotifier {
   Avistamiento avistamiento = Avistamiento();
   bool _cargando = false;
@@ -20,89 +23,54 @@ class AvistamientoVM extends ChangeNotifier {
   void setDireccion(String v) => avistamiento.direccion = v;
   void setDescripcion(String v) => avistamiento.descripcion = v;
 
-  // 🔧 Comprimir imagen antes de subir
-  Future<File> _comprimirImagen(File archivo) async {
-    final dir = await getTemporaryDirectory();
-    final targetPath =
-        "${dir.absolute.path}/${DateTime.now().millisecondsSinceEpoch}.jpg";
+  /// Valida que [archivo] contenga un perro o gato y lo sube a Storage.
+  ///
+  /// Delega en [ImagenUtil.validarYSubirFoto] para centralizar la lógica
+  /// compartida con [ReporteMascotaVM]. Lanza [Exception] si la imagen
+  /// no supera el umbral de confianza del modelo TFLite.
+  Future<String> subirFoto(File archivo) =>
+      ImagenUtil.validarYSubirFoto(archivo, storagePath: 'avistamientos');
 
-    final result = await FlutterImageCompress.compressAndGetFile(
-      archivo.absolute.path,
-      targetPath,
-      quality: 70,
-    );
-
-    return result != null ? File(result.path) : archivo;
-  }
-
-  // 📸 Subir foto con validación local (modelo TFLite)
-  Future<String> subirFoto(File archivo) async {
-    final comprimido = await _comprimirImagen(archivo);
-
-    final resultado = await ServicioTFLite.detectarAnimal(comprimido);
-    final tipo = resultado["etiqueta"];
-
-    // 🛑 Umbral estricto 0.95
-    const double umbralDeseado = 0.95;
-    final double confianzaRaw = resultado["confianza"];
-
-    if (confianzaRaw < umbralDeseado || (tipo != "perro" && tipo != "gato")) {
-      // 1. Si la validación falla, lanzamos la excepción y BLOQUEAMOS la subida.
-      // Incluir tipo y confianza en el mensaje de error para ayudar al usuario a entender por qué falló.
-      throw Exception(
-        "❌ La imagen no parece contener un perro o gato válido. Intenta subir una imagen más clara.",
+  /// Persiste el avistamiento en Firestore, otorga PataCoins al registrador
+  /// y lanza la búsqueda de coincidencias con reportes cercanos.
+  ///
+  /// Retorna `true` si todo fue exitoso, `false` en caso de error.
+  /// Lanza [StateError] si no hay usuario autenticado al momento de guardar.
+  Future<bool> guardarAvistamiento() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) {
+      throw StateError(
+        'No hay usuario autenticado para guardar el avistamiento.',
       );
     }
 
-    // ❌ ELIMINADO: Todo el bloque de ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar,
-    // ya que la vista debe manejar el éxito.
-
-    // 2. Si pasa la validación (confianza alta en perro/gato), procede la subida.
-    final uid = FirebaseAuth.instance.currentUser!.uid;
-    final ref = FirebaseStorage.instance
-        .ref()
-        .child("avistamientos")
-        .child(uid)
-        .child("${DateTime.now().millisecondsSinceEpoch}.jpg");
-
-    await ref.putFile(comprimido);
-
-    // 3. Devuelve la URL (La VISTA mostrará el mensaje de éxito)
-    return await ref.getDownloadURL();
-  }
-
-  // 💾 Guardar el avistamiento en Firestore
-  Future<bool> guardarAvistamiento() async {
     try {
       _cargando = true;
       notifyListeners();
 
-      final uid = FirebaseAuth.instance.currentUser!.uid;
       final docRef = FirebaseFirestore.instance
-          .collection("avistamientos")
+          .collection('avistamientos')
           .doc();
 
       avistamiento.id = docRef.id;
       avistamiento.usuarioId = uid;
-
       avistamiento.direccion = avistamiento.direccion.trim();
       avistamiento.distrito = avistamiento.distrito.trim();
 
       await docRef.set(
         avistamiento.toMap()
-          ..addAll({"fechaRegistro": FieldValue.serverTimestamp()}),
+          ..addAll({'fechaRegistro': FieldValue.serverTimestamp()}),
       );
 
-      // ✔ Otorgar 10 PataCoins por registrar un avistamiento
-      await _otorgarPataCoins(10);
+      // Otorgar PataCoins por contribuir con un avistamiento.
+      await _otorgarPataCoins(uid, 10);
 
-      // 🔍 Intentar vincular con algún reporte de mascota perdida
+      // La búsqueda de coincidencias es best-effort; su fallo no debe cancelar el avistamiento.
       await _buscarCoincidenciaConReportes(avistamiento);
 
-      // 🔔 Notificación push global
       await NotificacionServicio.enviarPush(
-        titulo: "Nuevo avistamiento 👀",
-        cuerpo: "Se ha registrado un nuevo avistamiento de mascota.",
+        titulo: 'Nuevo avistamiento 👀',
+        cuerpo: 'Se ha registrado un nuevo avistamiento de mascota.',
       );
 
       _cargando = false;
@@ -111,7 +79,7 @@ class AvistamientoVM extends ChangeNotifier {
     } catch (e) {
       _cargando = false;
       notifyListeners();
-      debugPrint("❌ Error al guardar avistamiento: $e");
+      debugPrint('❌ Error al guardar avistamiento: $e');
       return false;
     }
   }
@@ -138,50 +106,51 @@ class AvistamientoVM extends ChangeNotifier {
 
   double _gradosARadianes(double grados) => grados * pi / 180.0;
 
-  // 🔍 Buscar coincidencia entre avistamiento y reportes cercanos
+  /// Compara el avistamiento con reportes activos de mascotas perdidas.
+  ///
+  /// Descarta reportes a más de 9 km (radio práctico para búsqueda urbana).
+  /// Si la similitud de imagen supera 0.5 vincula el avistamiento al reporte
+  /// y notifica al dueño. Es best-effort: los errores se loguean y no re-lanzan
+  /// para no cancelar el avistamiento ya guardado.
   Future<void> _buscarCoincidenciaConReportes(Avistamiento av) async {
     try {
       final reportes = await FirebaseFirestore.instance
-          .collection("reportes_mascotas")
-          .where("estado", isEqualTo: "Perdido")
+          .collection('reportes_mascotas')
+          .where('estado', isEqualTo: 'Perdido')
           .get();
 
       for (var doc in reportes.docs) {
         final data = doc.data();
-        final fotos = List<String>.from(data["fotos"] ?? []);
+        final fotos = List<String>.from(data['fotos'] ?? []);
         if (fotos.isEmpty) continue;
 
         final distancia = _calcularDistancia(
           av.latitud ?? 0,
           av.longitud ?? 0,
-          (data["latitud"] ?? 0).toDouble(),
-          (data["longitud"] ?? 0).toDouble(),
+          (data['latitud'] ?? 0).toDouble(),
+          (data['longitud'] ?? 0).toDouble(),
         );
 
-        print("📍 Distancia con ${doc.id}: ${distancia.toStringAsFixed(2)} km");
-
-        // Si está a más de 9 km, descartar
+        // 9 km es el radio máximo definido para considerar una coincidencia posible.
         if (distancia > 9.0) continue;
 
-        // Descargar imágenes y comparar localmente
         final similitud = await _compararImagenes(av.foto, fotos.first);
-        print("🤖 Similitud con ${doc.id}: $similitud");
 
         if (similitud >= 0.5) {
           await FirebaseFirestore.instance
-              .collection("avistamientos")
+              .collection('avistamientos')
               .doc(av.id)
-              .update({"reporteId": doc.id});
+              .update({'reporteId': doc.id});
 
-          final usuarioId = data["usuarioId"];
-          await _notificarCoincidencia(usuarioId, av.id);
-
-          print("✅ Avistamiento vinculado con reporte ${doc.id}");
+          final usuarioId = data['usuarioId'] as String?;
+          if (usuarioId != null) {
+            await _notificarCoincidencia(usuarioId, av.id);
+          }
           break;
         }
       }
     } catch (e) {
-      print("⚠️ Error al buscar coincidencias: $e");
+      debugPrint('⚠️ Error al buscar coincidencias: $e');
     }
   }
 
@@ -198,12 +167,23 @@ class AvistamientoVM extends ChangeNotifier {
     }
   }
 
-  // 📥 Descargar imagen desde URL temporalmente
+  /// Descarga la imagen desde [url] a un archivo temporal y la retorna.
+  ///
+  /// Lanza [HttpException] si el servidor retorna un status HTTP != 200.
   Future<File> _descargarImagen(String url) async {
     final response = await http.get(Uri.parse(url));
+
+    // Verificar que la respuesta sea exitosa antes de escribir los bytes,
+    // para no persistir una página de error HTML como si fuera una imagen.
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Error descargando imagen ($url): HTTP ${response.statusCode}',
+      );
+    }
+
     final dir = await getTemporaryDirectory();
     final file = File(
-      "${dir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg",
+      '${dir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg',
     );
     await file.writeAsBytes(response.bodyBytes);
     return file;
@@ -240,11 +220,12 @@ class AvistamientoVM extends ChangeNotifier {
     return null;
   }
 
-  Future<void> _otorgarPataCoins(int cantidad) async {
-    final uid = FirebaseAuth.instance.currentUser!.uid;
-
-    await FirebaseFirestore.instance.collection("usuarios").doc(uid).set({
-      "patacoins": FieldValue.increment(cantidad),
+  /// Incrementa los PataCoins del usuario [uid] en [cantidad].
+  ///
+  /// Usa merge para no sobreescribir otros campos del documento.
+  Future<void> _otorgarPataCoins(String uid, int cantidad) async {
+    await FirebaseFirestore.instance.collection('usuarios').doc(uid).set({
+      'patacoins': FieldValue.increment(cantidad),
     }, SetOptions(merge: true));
   }
 

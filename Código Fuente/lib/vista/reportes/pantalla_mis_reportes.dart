@@ -601,7 +601,11 @@ class _ListaReportes extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.error_outline, color: Colors.orange, size: 48),
+                  const Icon(
+                    Icons.error_outline,
+                    color: Colors.orange,
+                    size: 48,
+                  ),
                   const SizedBox(height: 12),
                   Text(
                     tipo == "reporte"
@@ -623,20 +627,23 @@ class _ListaReportes extends StatelessWidget {
             ),
           );
         }
-        if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData)
+        if (snapshot.connectionState == ConnectionState.waiting &&
+            !snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
+        }
 
-        // Ordenar client-side por fechaRegistro descendente
-        final docs = (snapshot.data?.docs ?? [])..sort((a, b) {
-          final dataA = a.data() as Map<String, dynamic>;
-          final dataB = b.data() as Map<String, dynamic>;
-          final tsA = dataA['fechaRegistro'] as Timestamp?;
-          final tsB = dataB['fechaRegistro'] as Timestamp?;
-          if (tsA == null && tsB == null) return 0;
-          if (tsA == null) return 1;
-          if (tsB == null) return -1;
-          return tsB.compareTo(tsA);
-        });
+        // Ordenar client-side por fechaRegistro descendente creando una nueva lista
+        final docs = List.of(snapshot.data?.docs ?? [])
+          ..sort((a, b) {
+            final dataA = a.data() as Map<String, dynamic>;
+            final dataB = b.data() as Map<String, dynamic>;
+            final tsA = dataA['fechaRegistro'] as Timestamp?;
+            final tsB = dataB['fechaRegistro'] as Timestamp?;
+            if (tsA == null && tsB == null) return 0;
+            if (tsA == null) return 1;
+            if (tsB == null) return -1;
+            return tsB.compareTo(tsA);
+          });
 
         if (docs.isEmpty) {
           return Center(

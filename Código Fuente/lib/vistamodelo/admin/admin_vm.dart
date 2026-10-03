@@ -31,15 +31,20 @@ class AdminVM extends ChangeNotifier {
       return false;
     }
 
-    buscandoDni = true;
-    notifyListeners();
-
-    final datos = await apiDni.consultarDni(dni);
+    Map<String, dynamic>? datos;
+    try {
+      datos = await apiDni.consultarDni(dni);
+    } catch (e) {
+      buscandoDni = false;
+      error = "DNI inválido o error en el servicio: $e";
+      notifyListeners();
+      return false;
+    }
 
     buscandoDni = false;
 
     if (datos == null) {
-      error = "DNI no encontrado o error en el servicio";
+      error = "DNI no encontrado o servicio no disponible";
       notifyListeners();
       return false;
     }
@@ -57,7 +62,11 @@ class AdminVM extends ChangeNotifier {
     return true;
   }
 
-  /// 📝 Registrar administrador
+  /// Crea una cuenta de administrador en Firebase Auth y guarda el perfil en Firestore.
+  ///
+  /// Verifica duplicado de DNI antes de crear la cuenta.
+  /// Retorna `true` si el registro fue exitoso. Retorna `false` y expone
+  /// el mensaje en [error] si ocurre un error de autenticación o de red.
   Future<bool> registrarAdministrador() async {
     if (!formKey.currentState!.validate()) return false;
 
@@ -68,21 +77,21 @@ class AdminVM extends ChangeNotifier {
     try {
       final dni = dniCtrl.text.trim();
 
-      // 1) Verificar duplicado por DNI
+      // Verificar duplicado por DNI antes de crear la cuenta en Auth
+      // para evitar crear cuentas Auth huérfanas sin documento en Firestore.
       final query = await FirebaseFirestore.instance
-          .collection("usuarios")
-          .where("dni", isEqualTo: dni)
+          .collection('usuarios')
+          .where('dni', isEqualTo: dni)
           .limit(1)
           .get();
 
       if (query.docs.isNotEmpty) {
         cargando = false;
-        error = "El DNI ya está registrado en otra cuenta.";
+        error = 'El DNI ya está registrado en otra cuenta.';
         notifyListeners();
         return false;
       }
 
-      // 2) Crear cuenta en Firebase Auth
       final cred = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: correoCtrl.text.trim(),
         password: claveCtrl.text.trim(),
@@ -90,28 +99,25 @@ class AdminVM extends ChangeNotifier {
 
       final uid = cred.user!.uid;
 
-      // 3) Crear objeto Usuario con rol ADMIN
       final usuario = Usuario(
         id: uid,
         dni: dni,
         nombre: nombreCtrl.text.trim(),
         correo: correoCtrl.text.trim(),
         telefono: telefonoCtrl.text.trim(),
-        rol: "admin", // 🔴 ROL ADMINISTRADOR
+        rol: 'admin',
         estadoVerificado: false,
-        estadoRol: "activo",
+        estadoRol: 'activo',
         fechaRegistro: DateTime.now(),
         fotoPerfil: null,
-        activo: true, // ✅ Las cuentas de admin están activas por defecto
+        activo: true,
       );
 
-      // 4) Guardar en Firestore
       await FirebaseFirestore.instance
-          .collection("usuarios")
+          .collection('usuarios')
           .doc(uid)
           .set(usuario.toMap());
 
-      // 🔥 Guardar token FCM del nuevo admin
       try {
         final token = await FirebaseMessaging.instance.getToken();
         if (token != null) {
@@ -121,19 +127,20 @@ class AdminVM extends ChangeNotifier {
               .update({'token': token});
         }
       } catch (e) {
-        print("Error guardando token FCM: $e");
+        // El token FCM es best-effort; su fallo no debe cancelar el registro.
+        debugPrint('Error guardando token FCM del admin (uid=$uid): $e');
       }
 
-      // 5) Enviar verificación
       await cred.user?.sendEmailVerification();
 
       cargando = false;
       notifyListeners();
       return true;
     } on FirebaseAuthException catch (e) {
-      error = e.message;
+      error = e.message ?? 'Error de autenticación desconocido.';
     } catch (e) {
       error = e.toString();
+      debugPrint('Error inesperado en registrarAdministrador: $e');
     }
 
     cargando = false;

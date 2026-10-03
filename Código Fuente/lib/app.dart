@@ -23,35 +23,43 @@ import 'vista/reportes/pantalla_reporte_mascota.dart';
 import 'vista/reportes/pantalla_avistamiento.dart';
 import 'vista/reportes/pantalla_ver_reportes.dart';
 import 'vista/reportes/pantalla_mis_reportes.dart';
-
-
 import 'vista/admin/pantalla_registro_admin.dart';
 import 'vista/admin/pantalla_inicio_admin.dart';
-
 import 'vistamodelo/auth/recuperar_vm.dart';
 import 'vistamodelo/auth/registro_vm.dart';
 import 'vistamodelo/auth/login_vm.dart';
 import 'vistamodelo/admin/admin_vm.dart';
 import 'vistamodelo/usuario/perfil_vm.dart';
-
 import 'servicios/api_dni_servicio.dart';
 
+/// Configuracion centralizada de la aplicacion.
+abstract final class AppConfig {
+  /// Token de acceso para el servicio API DNI.
+  /// Lee desde variable de entorno si esta presente via --dart-define.
+  static const String dniBearerToken = String.fromEnvironment(
+    'DNI_TOKEN',
+    defaultValue:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyOTUsImV4cCI6MTc1ODIzOTQxMX0.wX7JTrLUVGXvotDn376U462eIwzlA3PgzcM3sQ-mVX8',
+  );
+}
 
-final String bearer =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyOTUsImV4cCI6MTc1ODIzOTQxMX0.wX7JTrLUVGXvotDn376U462eIwzlA3PgzcM3sQ-mVX8";
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+/// Servicio que encapsula la clave global de navegacion.
+abstract final class NavigationService {
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final api = ApiDniServicio(bearerToken: bearer);
+    final api = ApiDniServicio(bearerToken: AppConfig.dniBearerToken);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'SOS Mascota',
-      navigatorKey: navigatorKey,
+      navigatorKey: NavigationService.navigatorKey,
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF4D9EF6)),

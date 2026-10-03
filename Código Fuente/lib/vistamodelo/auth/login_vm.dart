@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class LoginVM extends ChangeNotifier {
   bool cargando = false;
   String? error;
 
+  @override
   void dispose() {
     correoCtrl.dispose();
     claveCtrl.dispose();
@@ -20,9 +22,9 @@ class LoginVM extends ChangeNotifier {
 
   Future<void> guardarTokenFCM(String uid) async {
     try {
-      final token = await FirebaseMessaging.instance
-          .getToken()
-          .timeout(const Duration(seconds: 5));
+      final token = await FirebaseMessaging.instance.getToken().timeout(
+        const Duration(seconds: 5),
+      );
 
       if (token != null) {
         await FirebaseFirestore.instance
@@ -30,11 +32,11 @@ class LoginVM extends ChangeNotifier {
             .doc(uid)
             .update({'token': token})
             .timeout(const Duration(seconds: 5));
-        print("✅ Token FCM guardado para usuario: $uid");
+        debugPrint("Token FCM guardado para usuario: $uid");
       }
     } catch (e) {
       // No bloquear el login si falla el token FCM
-      print("❌ Error al guardar token FCM (ignorado): $e");
+      debugPrint("Error al guardar token FCM (ignorado): $e");
     }
   }
 
@@ -55,7 +57,8 @@ class LoginVM extends ChangeNotifier {
           .timeout(
             const Duration(seconds: 15),
             onTimeout: () => throw Exception(
-                "Tiempo de espera agotado. Verifica tu conexión a internet."),
+              "Tiempo de espera agotado. Verifica tu conexión a internet.",
+            ),
           );
 
       final uid = cred.user!.uid;
@@ -68,11 +71,13 @@ class LoginVM extends ChangeNotifier {
           .timeout(
             const Duration(seconds: 10),
             onTimeout: () => throw Exception(
-                "No se pudo cargar tu perfil. Intenta de nuevo."),
+              "No se pudo cargar tu perfil. Intenta de nuevo.",
+            ),
           );
 
       if (!doc.exists) {
-        error = "El perfil de usuario no está completo. Contacte al administrador.";
+        error =
+            "El perfil de usuario no está completo. Contacte al administrador.";
         await FirebaseAuth.instance.signOut();
         cargando = false;
         notifyListeners();
@@ -92,8 +97,8 @@ class LoginVM extends ChangeNotifier {
         }
       }
 
-      // 4. Guardar token FCM en segundo plano (no bloquea la navegación)
-      guardarTokenFCM(uid); // sin await intencional
+      // 4. Guardar token FCM en segundo plano sin demorar la navegación del usuario
+      unawaited(guardarTokenFCM(uid));
 
       cargando = false;
       notifyListeners();
@@ -112,8 +117,8 @@ class LoginVM extends ChangeNotifier {
       error = (e.code == 'user-not-found')
           ? 'Usuario no existe'
           : (e.code == 'wrong-password')
-              ? 'Contraseña incorrecta'
-              : (e.message ?? 'Error al iniciar sesión');
+          ? 'Contraseña incorrecta'
+          : (e.message ?? 'Error al iniciar sesión');
       cargando = false;
       notifyListeners();
       return null;

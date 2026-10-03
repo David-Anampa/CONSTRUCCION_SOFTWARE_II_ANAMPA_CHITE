@@ -7,7 +7,8 @@ import '../../modelo/AdminEstadisticas.dart';
 class AdminEstadisticasVM extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  bool _disposed = false; // ✅ Guard para evitar notifyListeners después de dispose
+  bool _disposed =
+      false; // ✅ Guard para evitar notifyListeners después de dispose
 
   bool _cargando = false;
   bool get cargando => _cargando;
@@ -22,13 +23,16 @@ class AdminEstadisticasVM extends ChangeNotifier {
   List<EstadisticasPorDia> get estadisticasPorDia => _estadisticasPorDia;
 
   List<EstadisticasPorTipo> _estadisticasPorTipoMascota = [];
-  List<EstadisticasPorTipo> get estadisticasPorTipoMascota => _estadisticasPorTipoMascota;
+  List<EstadisticasPorTipo> get estadisticasPorTipoMascota =>
+      _estadisticasPorTipoMascota;
 
   List<EstadisticasPorDistrito> _estadisticasPorDistrito = [];
-  List<EstadisticasPorDistrito> get estadisticasPorDistrito => _estadisticasPorDistrito;
+  List<EstadisticasPorDistrito> get estadisticasPorDistrito =>
+      _estadisticasPorDistrito;
 
   List<EstadisticasPorUbicacion> _estadisticasPorUbicacion = [];
-  List<EstadisticasPorUbicacion> get estadisticasPorUbicacion => _estadisticasPorUbicacion;
+  List<EstadisticasPorUbicacion> get estadisticasPorUbicacion =>
+      _estadisticasPorUbicacion;
 
   RangoFechas _rangoFechas = RangoFechas.ultimoMes();
   RangoFechas get rangoFechas => _rangoFechas;
@@ -100,8 +104,11 @@ class AdminEstadisticasVM extends ChangeNotifier {
 
       for (var doc in reportesSnapshot.docs) {
         final estado = (doc.data()["estado"] ?? "").toString().toUpperCase();
-        if (estado == "PERDIDO") reportesPerdidos++;
-        else if (estado == "ENCONTRADO") reportesEncontrados++;
+        if (estado == "PERDIDO") {
+          reportesPerdidos++;
+        } else if (estado == "ENCONTRADO") {
+          reportesEncontrados++;
+        }
       }
 
       final avistamientosSnapshot = await _firestore
@@ -153,12 +160,14 @@ class AdminEstadisticasVM extends ChangeNotifier {
             .where("fechaRegistro", isLessThan: siguienteMes)
             .get();
 
-        resultado.add(EstadisticasPorMes(
-          mes: _obtenerNombreMes(mes.month),
-          reportes: reportes.docs.length,
-          avistamientos: avistamientos.docs.length,
-          usuarios: usuarios.docs.length,
-        ));
+        resultado.add(
+          EstadisticasPorMes(
+            mes: _obtenerNombreMes(mes.month),
+            reportes: reportes.docs.length,
+            avistamientos: avistamientos.docs.length,
+            usuarios: usuarios.docs.length,
+          ),
+        );
       }
 
       if (_disposed) return; // ✅ Verificar antes de asignar
@@ -215,8 +224,7 @@ class AdminEstadisticasVM extends ChangeNotifier {
           cantidad: entry.value,
           porcentaje: total > 0 ? (entry.value / total * 100) : 0.0,
         );
-      }).toList()
-        ..sort((a, b) => b.cantidad.compareTo(a.cantidad));
+      }).toList()..sort((a, b) => b.cantidad.compareTo(a.cantidad));
 
       if (_disposed) return; // ✅ Verificar antes de asignar
       _estadisticasPorTipoMascota = resultado;
@@ -254,8 +262,11 @@ class AdminEstadisticasVM extends ChangeNotifier {
       }
 
       var resultado = distritos.values.toList()
-        ..sort((a, b) => (b.reportes + b.avistamientos)
-            .compareTo(a.reportes + a.avistamientos));
+        ..sort(
+          (a, b) => (b.reportes + b.avistamientos).compareTo(
+            a.reportes + a.avistamientos,
+          ),
+        );
 
       if (resultado.length > 10) resultado = resultado.sublist(0, 10);
 
@@ -284,29 +295,38 @@ class AdminEstadisticasVM extends ChangeNotifier {
 
       for (var doc in reportes.docs) {
         final data = doc.data();
-        final ubicacion = data["ubicacion"] ?? data["direccion"] ?? "Sin ubicación";
+        final ubicacion =
+            data["ubicacion"] ?? data["direccion"] ?? "Sin ubicación";
         final distrito = data["distrito"] ?? "Sin distrito";
         if (ubicacion == "Sin ubicación") continue;
         final key = "$distrito|$ubicacion";
         ubicaciones[key] ??= EstadisticasPorUbicacion(
-            ubicacion: ubicacion, distrito: distrito);
+          ubicacion: ubicacion,
+          distrito: distrito,
+        );
         ubicaciones[key]!.reportes++;
       }
 
       for (var doc in avistamientos.docs) {
         final data = doc.data();
-        final ubicacion = data["ubicacion"] ?? data["direccion"] ?? "Sin ubicación";
+        final ubicacion =
+            data["ubicacion"] ?? data["direccion"] ?? "Sin ubicación";
         final distrito = data["distrito"] ?? "Sin distrito";
         if (ubicacion == "Sin ubicación") continue;
         final key = "$distrito|$ubicacion";
         ubicaciones[key] ??= EstadisticasPorUbicacion(
-            ubicacion: ubicacion, distrito: distrito);
+          ubicacion: ubicacion,
+          distrito: distrito,
+        );
         ubicaciones[key]!.avistamientos++;
       }
 
       var resultado = ubicaciones.values.toList()
-        ..sort((a, b) => (b.reportes + b.avistamientos)
-            .compareTo(a.reportes + a.avistamientos));
+        ..sort(
+          (a, b) => (b.reportes + b.avistamientos).compareTo(
+            a.reportes + a.avistamientos,
+          ),
+        );
 
       if (resultado.length > 10) resultado = resultado.sublist(0, 10);
 
@@ -394,9 +414,9 @@ class AdminEstadisticasVM extends ChangeNotifier {
   String _generarResumenUsuarios() {
     final tasaActividad = _estadisticasGenerales.totalUsuarios > 0
         ? (_estadisticasGenerales.usuariosActivos /
-                _estadisticasGenerales.totalUsuarios *
-                100)
-            .toStringAsFixed(1)
+                  _estadisticasGenerales.totalUsuarios *
+                  100)
+              .toStringAsFixed(1)
         : "0.0";
     return """
 👥 RESUMEN DE USUARIOS
@@ -419,9 +439,9 @@ El sistema cuenta con ${_estadisticasGenerales.totalUsuarios} usuarios registrad
   String _generarResumenReportes() {
     final tasaExito = _estadisticasGenerales.totalReportes > 0
         ? (_estadisticasGenerales.reportesEncontrados /
-                _estadisticasGenerales.totalReportes *
-                100)
-            .toStringAsFixed(1)
+                  _estadisticasGenerales.totalReportes *
+                  100)
+              .toStringAsFixed(1)
         : "0.0";
     return """
 🐾 RESUMEN DE REPORTES
@@ -445,8 +465,8 @@ Se han reportado ${_estadisticasGenerales.totalReportes} mascotas, con una tasa 
   }
 
   String _generarResumenAvistamientos() {
-    final promedioPorDia =
-        (_estadisticasGenerales.totalAvistamientos / 7).toStringAsFixed(1);
+    final promedioPorDia = (_estadisticasGenerales.totalAvistamientos / 7)
+        .toStringAsFixed(1);
     return """
 👁️ RESUMEN DE AVISTAMIENTOS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -481,8 +501,19 @@ El distrito con más actividad es ${_estadisticasPorDistrito.isNotEmpty ? _estad
 
   String _obtenerNombreMes(int mes) {
     const meses = [
-      '', 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
-      'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+      '',
+      'Ene',
+      'Feb',
+      'Mar',
+      'Abr',
+      'May',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dic',
     ];
     return meses[mes];
   }

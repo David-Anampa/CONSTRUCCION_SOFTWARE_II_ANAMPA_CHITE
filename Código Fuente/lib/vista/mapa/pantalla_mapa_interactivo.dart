@@ -155,11 +155,12 @@ class _PantallaMapaInteractivoState extends State<PantallaMapaInteractivo> {
                         markers: _puntos.map((punto) {
                           final lat = punto["latitud"];
                           final lng = punto["longitud"];
-                          if (lat == null || lng == null)
+                          if (lat == null || lng == null) {
                             return const Marker(
                               point: LatLng(0, 0),
                               child: SizedBox(),
                             );
+                          }
 
                           final esReporte = punto["tipo"] == "reporte";
                           final color = esReporte

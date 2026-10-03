@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../modelo/usuario.dart';
-// import '../../servicios/api_dni_servicio.dart'; // ❌ Eliminado
 
+/// ViewModel para el registro de nuevos usuarios en SOS Mascota.
 class RegistroVM extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
 
@@ -12,17 +12,11 @@ class RegistroVM extends ChangeNotifier {
   final correoCtrl = TextEditingController();
   final telefonoCtrl = TextEditingController();
   final claveCtrl = TextEditingController();
-  // ❌ Eliminado: final dniCtrl = TextEditingController();
 
   bool cargando = false;
-  // ❌ Eliminado: bool buscandoDni = false;
   String? error;
 
-  // ❌ Eliminado: final ApiDniServicio apiDni;
-  // El constructor ya no necesita el servicio DNI
   RegistroVM();
-
-  // ❌ Eliminado: Función buscarYAutocompletarNombre
 
   /// 📝 Registrar usuario
   Future<bool> registrarUsuario() async {
@@ -76,7 +70,7 @@ class RegistroVM extends ChangeNotifier {
               .update({'token': token});
         }
       } catch (e) {
-        print("Error guardando token FCM: $e");
+        debugPrint("Error guardando token FCM: $e");
       }
 
       // 4) Enviar verificación

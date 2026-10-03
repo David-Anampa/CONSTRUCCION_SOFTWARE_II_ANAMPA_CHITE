@@ -3,30 +3,33 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sos_mascotas/servicios/notificacion_servicio.dart';
-import 'package:sos_mascotas/servicios/servicio_tflite.dart';
+import 'package:sos_mascotas/utils/imagen_util.dart';
 import '../../modelo/reporte_mascota.dart';
 
+/// ViewModel del asistente (wizard) de 3 pasos para registrar una mascota perdida.
+///
+/// Administra el estado mutable del formulario, controla el paso activo y
+/// coordina la subida de medios y el guardado final en Firestore.
 class ReporteMascotaVM extends ChangeNotifier {
   int _paso = 0;
   ReporteMascota reporte = ReporteMascota();
   bool _cargando = false;
-  bool _disposed = false; // 👈 nuevo flag de control
 
-  // ✅ FormKeys para validaciones
+  // Flag interno para evitar notifyListeners() después de dispose().
+  bool _disposed = false;
+
+  // FormKeys para validar cada paso del wizard de forma independiente.
   final formKeyPaso1 = GlobalKey<FormState>();
   final formKeyPaso2 = GlobalKey<FormState>();
   final formKeyPaso3 = GlobalKey<FormState>();
 
-  // Getters
   int get paso => _paso;
   bool get cargando => _cargando;
   List<String> get fotos => reporte.fotos;
   List<String> get videos => reporte.videos;
 
-  // 🧩 Safe notify (evita error after dispose)
+  /// Dispara notifyListeners() solo si el ViewModel aún está activo.
   void _notify() {
     if (!_disposed) notifyListeners();
   }
@@ -37,7 +40,8 @@ class ReporteMascotaVM extends ChangeNotifier {
     super.dispose();
   }
 
-  // 🔹 Control del wizard
+  // ---------- Control del wizard ----------
+
   void setPaso(int nuevoPaso) {
     _paso = nuevoPaso;
     _notify();
@@ -57,74 +61,16 @@ class ReporteMascotaVM extends ChangeNotifier {
     }
   }
 
-  // 📸 Agregar fotos
+  // ---------- Gestión de medios ----------
+
   void agregarFoto(String url) {
     reporte.fotos.add(url);
     _notify();
   }
 
-  // 🎥 Agregar videos
   void agregarVideo(String url) {
     reporte.videos.add(url);
     _notify();
-  }
-
-  // 🔧 Comprimir imagen antes de subir
-  Future<File> _comprimirImagen(File archivo) async {
-    final dir = await getTemporaryDirectory();
-    final targetPath =
-        "${dir.absolute.path}/${DateTime.now().millisecondsSinceEpoch}.jpg";
-
-    final result = await FlutterImageCompress.compressAndGetFile(
-      archivo.absolute.path,
-      targetPath,
-      quality: 70,
-    );
-
-    return result != null ? File(result.path) : archivo;
-  }
-
-  // 📸 Subir foto con validación local (modelo TFLite)
-  Future<String> subirFoto(File archivo) async {
-    final comprimido = await _comprimirImagen(archivo);
-
-    // 🧠 Validar con el modelo TFLite local
-    final resultado = await ServicioTFLite.detectarAnimal(comprimido);
-    final etiqueta = resultado["etiqueta"];
-    final confianza = resultado["confianza"];
-
-    // ⚠️ Solo permitir “perro” o “gato” con buena confianza
-    if (confianza < 0.95 || (etiqueta != "perro" && etiqueta != "gato")) {
-      // Si la validación falla, lanzamos la excepción y bloqueamos la subida.
-      throw Exception(
-        "❌ La imagen no parece contener un perro o gato válido. Por favor, sube una imagen clara de la mascota perdida.",
-      );
-    }
-
-    final uid = FirebaseAuth.instance.currentUser!.uid;
-
-    final ref = FirebaseStorage.instance
-        .ref()
-        .child("reportes_mascotas")
-        .child(uid)
-        .child("${DateTime.now().millisecondsSinceEpoch}.jpg");
-
-    await ref.putFile(comprimido);
-    return await ref.getDownloadURL();
-  }
-
-  // 🎥 Subir video (máx 10 segundos)
-  Future<String> subirVideo(File archivo) async {
-    final uid = FirebaseAuth.instance.currentUser!.uid;
-
-    final ref = FirebaseStorage.instance
-        .ref()
-        .child("reportes_mascotas")
-        .child(uid)
-        .child("${DateTime.now().millisecondsSinceEpoch}.mp4");
-
-    await ref.putFile(archivo);
-    return await ref.getDownloadURL();
   }
 
   void removerFoto(String url) {
@@ -132,31 +78,62 @@ class ReporteMascotaVM extends ChangeNotifier {
     _notify();
   }
 
-  // 💾 Guardar reporte en Firestore
+  /// Valida que [archivo] contenga un perro o gato y lo sube a Storage.
+  ///
+  /// Delega en [ImagenUtil.validarYSubirFoto] para centralizar la lógica de
+  /// compresión + validación TFLite + subida (evita duplicado con AvistamientoVM).
+  /// Lanza [Exception] si la imagen no pasa el umbral de confianza del modelo.
+  Future<String> subirFoto(File archivo) =>
+      ImagenUtil.validarYSubirFoto(archivo, storagePath: 'reportes_mascotas');
+
+  /// Sube un [archivo] de video a Firebase Storage.
+  ///
+  /// Lanza [StateError] si no hay usuario autenticado.
+  Future<String> subirVideo(File archivo) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) {
+      throw StateError('No hay usuario autenticado para subir el video.');
+    }
+
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child('reportes_mascotas')
+        .child(uid)
+        .child('${DateTime.now().millisecondsSinceEpoch}.mp4');
+
+    await ref.putFile(archivo);
+    return ref.getDownloadURL();
+  }
+
+  // ---------- Persistencia ----------
+
+  /// Guarda el reporte completo en Firestore y dispara la notificación push global.
+  ///
+  /// Retorna `true` si el guardado fue exitoso, `false` en caso de error.
   Future<bool> guardarReporte() async {
     try {
       _cargando = true;
       _notify();
 
-      final uid = FirebaseAuth.instance.currentUser!.uid;
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      if (uid == null) throw StateError('No hay usuario autenticado.');
+
       final docRef = FirebaseFirestore.instance
-          .collection("reportes_mascotas")
+          .collection('reportes_mascotas')
           .doc();
 
       reporte.id = docRef.id;
+      reporte.usuarioId = uid;
+      reporte.estado = 'Perdido';
 
-      await docRef.set(
-        reporte.toMap()..addAll({
-          "usuarioId": uid,
-          "fechaRegistro": FieldValue.serverTimestamp(),
-          "estado": "Perdido",
-        }),
-      );
+      await docRef.set({
+        ...reporte.toMap(),
+        'fechaRegistro': FieldValue.serverTimestamp(),
+      });
 
-      // 🔔 Notificación push global
       await NotificacionServicio.enviarPush(
-        titulo: "Nuevo reporte 🐾",
-        cuerpo: "Se ha registrado una nueva mascota perdida.",
+        titulo: 'Nuevo reporte 🐾',
+        cuerpo: 'Se ha registrado una nueva mascota perdida.',
       );
 
       _cargando = false;
@@ -165,7 +142,7 @@ class ReporteMascotaVM extends ChangeNotifier {
     } catch (e) {
       _cargando = false;
       _notify();
-      debugPrint("❌ Error al guardar reporte: $e");
+      debugPrint('❌ Error al guardar reporte: $e');
       return false;
     }
   }

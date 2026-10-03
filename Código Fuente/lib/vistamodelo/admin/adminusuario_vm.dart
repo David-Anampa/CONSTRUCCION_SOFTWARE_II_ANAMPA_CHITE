@@ -15,20 +15,20 @@ class AdminUsuarioVM extends ChangeNotifier {
   bool get cargando => _cargando;
   String get filtroRol => _filtroRol;
 
-  // Obtener todos los usuarios (excepto admins)
+  /// Retorna un stream en tiempo real de todos los usuarios excepto admins.
+  ///
+  /// Los documentos con rol `admin` se filtran del lado del cliente
+  /// porque Firestore no admite `!=` combinado con `orderBy` en la misma consulta.
   Stream<List<AdminUsuarioModel>> obtenerUsuariosStream() {
     return _firestore.collection('usuarios').snapshots().map((snapshot) {
       _usuarios = snapshot.docs
           .map((doc) {
             try {
               final data = doc.data();
-              // Filtrar admins aquí
-              if (data['rol'] == 'admin') {
-                return null;
-              }
+              if (data['rol'] == 'admin') return null;
               return AdminUsuarioModel.fromFirestore(data, doc.id);
             } catch (e) {
-              print('Error al procesar usuario ${doc.id}: $e');
+              debugPrint('Error al deserializar usuario ${doc.id}: $e');
               return null;
             }
           })
@@ -40,8 +40,6 @@ class AdminUsuarioVM extends ChangeNotifier {
       return _usuariosFiltrados;
     });
   }
-
-
 
   // Aplicar filtros de búsqueda y rol
   void _aplicarFiltros() {
@@ -76,95 +74,43 @@ class AdminUsuarioVM extends ChangeNotifier {
     _aplicarFiltros();
   }
 
-  // 🔥 Activar/Desactivar usuario - VERSIÓN MEJORADA CON LOGS
+  /// Activa o desactiva la cuenta de un usuario en Firestore.
+  ///
+  /// Hace una lectura previa para verificar que el documento exista antes de
+  /// actualizar, porque Firestore no lanza error si se actualiza un doc inexistente
+  /// cuando se usa `update()` con un documento que no tiene los permisos correctos.
+  ///
+  /// Retorna `true` si el campo `activo` quedó con el valor esperado, `false` si
+  /// el documento no existe, o si ocurrió un error.
   Future<bool> cambiarEstadoUsuario(String uid, bool nuevoEstado) async {
     try {
-      print('');
-      print('╔════════════════════════════════════════════════════╗');
-      print('║        INICIANDO CAMBIO DE ESTADO USUARIO         ║');
-      print('╚════════════════════════════════════════════════════╝');
-      print('📌 UID: $uid');
-      print(
-        '📌 Nuevo Estado: $nuevoEstado (${nuevoEstado ? "ACTIVO" : "DESACTIVADO"})',
-      );
-      print('📌 Timestamp: ${DateTime.now()}');
-      print('');
-
-      // Verificar que el documento existe
       final docRef = _firestore.collection('usuarios').doc(uid);
       final docSnapshot = await docRef.get();
 
       if (!docSnapshot.exists) {
-        print('❌ ERROR: El documento NO EXISTE en Firestore');
-        print('   Collection: usuarios');
-        print('   Document ID: $uid');
+        debugPrint('❌ cambiarEstadoUsuario: doc no existe para uid=$uid');
         return false;
       }
 
-      final datosAnteriores = docSnapshot.data();
-      print('✅ Documento encontrado en Firestore');
-      print('📄 Datos ANTES del cambio:');
-      print(
-        '   - Email: ${datosAnteriores?['correo'] ?? datosAnteriores?['email']}',
-      );
-      print('   - Nombre: ${datosAnteriores?['nombre']}');
-      print('   - Rol: ${datosAnteriores?['rol']}');
-      print('   - Estado Actual: ${datosAnteriores?['activo']}');
-      print('');
-
-      // Actualizar el campo 'activo'
-      print('🔄 Ejecutando actualización en Firestore...');
       await docRef.update({'activo': nuevoEstado});
 
-      print('✅ Comando UPDATE ejecutado exitosamente');
-      print('');
-
-      // Esperar un momento para que Firestore procese
+      // Verificación post-escritura: Firestore puede devolver ok en update()
+      // aunque las reglas lo silencien. La lectura confirma el estado real.
       await Future.delayed(const Duration(milliseconds: 800));
-
-      // Verificar el cambio
-      print('🔍 Verificando el cambio en Firestore...');
-      final docVerificacion = await docRef.get();
-      final datosNuevos = docVerificacion.data();
-
-      print('');
-      print('╔════════════════════════════════════════════════════╗');
-      print('║              VERIFICACIÓN FINAL                    ║');
-      print('╚════════════════════════════════════════════════════╝');
-      print('📊 Campo "activo" en Firestore: ${datosNuevos?['activo']}');
-      print(
-        '✅ ¿Cambió correctamente?: ${datosNuevos?['activo'] == nuevoEstado ? "SÍ ✓" : "NO ✗"}',
-      );
-
-      if (datosNuevos?['activo'] == nuevoEstado) {
-        print('🎉 ÉXITO: El estado se cambió correctamente');
-      } else {
-        print('⚠️ ADVERTENCIA: El estado NO cambió como se esperaba');
-        print('   Esperado: $nuevoEstado');
-        print('   Obtenido: ${datosNuevos?['activo']}');
-      }
-      print('╚════════════════════════════════════════════════════╝');
-      print('');
+      final verificacion = await docRef.get();
+      final estadoFinal = verificacion.data()?['activo'];
 
       notifyListeners();
-      return datosNuevos?['activo'] == nuevoEstado;
+      return estadoFinal == nuevoEstado;
     } catch (e, stackTrace) {
-      print('');
-      print('╔════════════════════════════════════════════════════╗');
-      print('║                  ⚠️  ERROR CRÍTICO                 ║');
-      print('╚════════════════════════════════════════════════════╝');
-      print('❌ Tipo de error: ${e.runtimeType}');
-      print('❌ Mensaje: $e');
-      print('');
-      print('📍 Stack Trace:');
-      print(stackTrace);
-      print('╚════════════════════════════════════════════════════╝');
-      print('');
+      debugPrint('❌ Error en cambiarEstadoUsuario (uid=$uid): $e\n$stackTrace');
       return false;
     }
   }
 
-  // Cambiar rol de usuario
+  /// Cambia el [nuevoRol] del usuario identificado por [uid].
+  ///
+  /// Retorna `true` si la operación fue exitosa, `false` en caso de error.
   Future<bool> cambiarRolUsuario(String uid, String nuevoRol) async {
     try {
       await _firestore.collection('usuarios').doc(uid).update({
@@ -172,29 +118,33 @@ class AdminUsuarioVM extends ChangeNotifier {
       });
       return true;
     } catch (e) {
-      print('Error al cambiar rol: $e');
+      debugPrint('Error al cambiar rol (uid=$uid): $e');
       return false;
     }
   }
 
-  // Eliminar usuario
+  /// Elimina el documento del usuario [uid] de la colección `usuarios`.
+  ///
+  /// Retorna `true` si fue exitoso, `false` en caso de error.
   Future<bool> eliminarUsuario(String uid) async {
     try {
       await _firestore.collection('usuarios').doc(uid).delete();
       return true;
     } catch (e) {
-      print('Error al eliminar usuario: $e');
+      debugPrint('Error al eliminar usuario (uid=$uid): $e');
       return false;
     }
   }
 
-  // Eliminar colaborador
+  /// Elimina el documento del colaborador [id] de la colección `colaboradores`.
+  ///
+  /// Retorna `true` si fue exitoso, `false` en caso de error.
   Future<bool> eliminarColaborador(String id) async {
     try {
       await _firestore.collection('colaboradores').doc(id).delete();
       return true;
     } catch (e) {
-      print('Error al eliminar colaborador: $e');
+      debugPrint('Error al eliminar colaborador (id=$id): $e');
       return false;
     }
   }

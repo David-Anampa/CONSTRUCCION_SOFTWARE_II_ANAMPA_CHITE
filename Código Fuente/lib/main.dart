@@ -12,9 +12,11 @@ import 'app.dart';
 // 🔹 Importa el servicio TFLite
 import 'package:sos_mascotas/servicios/servicio_tflite.dart';
 
-// Inicializa el plugin de notificaciones locales
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+/// Servicio encapsulado para la gestion de notificaciones locales.
+abstract final class LocalNotificationService {
+  static final FlutterLocalNotificationsPlugin instance =
+      FlutterLocalNotificationsPlugin();
+}
 
 /// 📨 Handler para mensajes recibidos en background (solo Android/iOS)
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -75,7 +77,6 @@ Future<void> main() async {
   // 1. ✅ Inicializa Firebase
   // Esta operación es asíncrona pero es necesaria para inicializar el SDK.
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  print("🚫 Firebase App Check desactivado para entorno de desarrollo.");
 
   // 2. 🔹 Inicializa modelos TFLite (Operación LOCAL)
   try {
@@ -108,7 +109,7 @@ Future<void> main() async {
     const InitializationSettings initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
 
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    await LocalNotificationService.instance.initialize(initializationSettings);
 
     // 🧠 Handler de mensajes
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -116,7 +117,7 @@ Future<void> main() async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       debugPrint('🔔 Mensaje recibido: ${message.notification?.title}');
       if (message.notification != null) {
-        flutterLocalNotificationsPlugin.show(
+        LocalNotificationService.instance.show(
           0,
           message.notification!.title,
           message.notification!.body,

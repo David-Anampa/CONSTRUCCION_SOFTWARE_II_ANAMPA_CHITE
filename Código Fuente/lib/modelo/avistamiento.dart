@@ -1,6 +1,10 @@
+/// Modelo de dominio que representa el avistamiento público de una mascota en la calle.
+///
+/// Permite alertar a la comunidad y vincular potencialmente la ubicación
+/// con un reporte de mascota perdida previamente registrado.
 class Avistamiento {
   String id;
-  String reporteId; // opcional, si se relaciona a un reporte de pérdida
+  String reporteId;
   String usuarioId;
   String foto;
   String direccion;

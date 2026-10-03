@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../vistamodelo/auth/login_vm.dart';
 
@@ -37,7 +36,6 @@ class _PantallaLoginState extends State<PantallaLogin> {
 class _PantallaLoginContent extends StatelessWidget {
   const _PantallaLoginContent();
 
-
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<LoginVM>();
@@ -49,8 +47,6 @@ class _PantallaLoginContent extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 40),
-
-              // Logo
               const Column(
                 children: [
                   CircleAvatar(
@@ -69,10 +65,7 @@ class _PantallaLoginContent extends StatelessWidget {
                   ),
                 ],
               ),
-
               const SizedBox(height: 30),
-
-              // Tarjeta de Login
               Container(
                 width: 340,
                 padding: const EdgeInsets.all(24),
@@ -101,8 +94,6 @@ class _PantallaLoginContent extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
-
-                      // Campo Correo
                       TextFormField(
                         controller: vm.correoCtrl,
                         decoration: InputDecoration(
@@ -118,8 +109,6 @@ class _PantallaLoginContent extends StatelessWidget {
                             : "Correo inválido",
                       ),
                       const SizedBox(height: 15),
-
-                      // Campo Contraseña
                       TextFormField(
                         controller: vm.claveCtrl,
                         obscureText: true,
@@ -135,9 +124,7 @@ class _PantallaLoginContent extends StatelessWidget {
                             ? null
                             : "Mínimo 6 caracteres",
                       ),
-
                       const SizedBox(height: 10),
-
                       Align(
                         alignment: Alignment.centerRight,
                         child: GestureDetector(
@@ -150,10 +137,7 @@ class _PantallaLoginContent extends StatelessWidget {
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 20),
-
-                      // Botón Entrar
                       ElevatedButton.icon(
                         icon: const Icon(Icons.login),
                         style: ElevatedButton.styleFrom(

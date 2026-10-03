@@ -1,5 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// Representa un usuario registrado en el sistema SOS Mascota.
+///
+/// Encapsula datos de perfil, credenciales de rol, estado de cuenta y
+/// token para notificaciones push de Firebase Cloud Messaging.
 class Usuario {
   final String id;
   final String nombre;
@@ -13,11 +17,9 @@ class Usuario {
   final DateTime? fechaRegistro;
   final String? fcmToken;
   final bool activo;
-
-  // NUEVO: vínculo con tabla Colaboradores
   final String? idColaborador;
 
-  Usuario({
+  const Usuario({
     required this.id,
     required this.nombre,
     required this.correo,
@@ -30,7 +32,7 @@ class Usuario {
     this.fechaRegistro,
     this.fcmToken,
     this.activo = true,
-    this.idColaborador, // nuevo
+    this.idColaborador,
   });
 
   factory Usuario.fromMap(Map<String, dynamic> map, String id) {
@@ -47,9 +49,9 @@ class Usuario {
       fechaRegistro: map["fechaRegistro"] != null
           ? (map["fechaRegistro"] as Timestamp).toDate()
           : null,
-      fcmToken: map["fcmToken"],
+      fcmToken: map["fcmToken"] ?? map["token"],
       activo: map["activo"] ?? true,
-      idColaborador: map["idColaborador"], // NUEVO
+      idColaborador: map["idColaborador"],
     );
   }
 

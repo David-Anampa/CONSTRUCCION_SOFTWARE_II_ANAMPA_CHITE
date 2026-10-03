@@ -7,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:share_plus/share_plus.dart';
 import 'replies_page.dart';
 
-
 class PantallaComentarios extends StatefulWidget {
   const PantallaComentarios({super.key});
 
@@ -250,7 +249,7 @@ class _PantallaComentariosState extends State<PantallaComentarios> {
       for (var respuesta in respuestas.docs) {
         final respuestaData = respuesta.data();
         final comentarioData = comentario.data() as Map<String, dynamic>;
-        
+
         misRespuestas.add({
           'id': respuesta.id,
           'parentId': comentario.id,
@@ -382,7 +381,11 @@ class _PantallaComentariosState extends State<PantallaComentarios> {
                       _chip('todos', Icons.all_inclusive, 'Todos'),
                       _chip('likes', Icons.favorite, 'Likes'),
                       _chip('comentados', Icons.comment, 'Mis comentarios'),
-                      _chip('respuestas', Icons.reply, 'Mis respuestas'), // 🆕 Nuevo chip
+                      _chip(
+                        'respuestas',
+                        Icons.reply,
+                        'Mis respuestas',
+                      ), // 🆕 Nuevo chip
                       _chip('compartidos', Icons.share, 'Compartidos'),
                       _chip('guardados', Icons.bookmark, 'Guardados'),
                     ],
@@ -436,7 +439,8 @@ class _PantallaComentariosState extends State<PantallaComentarios> {
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
                         final err = snapshot.error.toString();
-                        final esPermisos = err.contains('PERMISSION_DENIED') ||
+                        final esPermisos =
+                            err.contains('PERMISSION_DENIED') ||
                             err.contains('permission-denied');
                         return Center(
                           child: Padding(
@@ -466,7 +470,9 @@ class _PantallaComentariosState extends State<PantallaComentarios> {
                                   'Verifica tu conexión e intenta de nuevo.',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      color: Colors.grey, fontSize: 13),
+                                    color: Colors.grey,
+                                    fontSize: 13,
+                                  ),
                                 ),
                               ],
                             ),
@@ -510,8 +516,7 @@ class _PantallaComentariosState extends State<PantallaComentarios> {
                             mediaUrl: data['mediaUrl'],
                             mediaType: data['mediaType'],
                             likes: List<String>.from(data['likes'] ?? []),
-                            dislikes:
-                                List<String>.from(data['dislikes'] ?? []),
+                            dislikes: List<String>.from(data['dislikes'] ?? []),
                             shares: data['shares'] ?? 0,
                             onLike: () => _toggleReaction(d.id, true),
                             onComment: () => Navigator.push(
@@ -554,7 +559,10 @@ class _PantallaComentariosState extends State<PantallaComentarios> {
           if (_filtro != 'respuestas')
             SafeArea(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 child: Row(
                   children: [
                     IconButton(
@@ -683,7 +691,8 @@ class CommentTile extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 18,
-                  backgroundImage: (fotoPerfil != null && fotoPerfil!.isNotEmpty)
+                  backgroundImage:
+                      (fotoPerfil != null && fotoPerfil!.isNotEmpty)
                       ? NetworkImage(fotoPerfil!)
                       : null,
                   backgroundColor: Colors.teal,
@@ -866,7 +875,8 @@ class RespuestaTile extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 18,
-                  backgroundImage: (fotoPerfil != null && fotoPerfil!.isNotEmpty)
+                  backgroundImage:
+                      (fotoPerfil != null && fotoPerfil!.isNotEmpty)
                       ? NetworkImage(fotoPerfil!)
                       : null,
                   backgroundColor: Colors.teal,
