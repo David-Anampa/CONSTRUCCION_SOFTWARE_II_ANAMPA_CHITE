@@ -19,7 +19,7 @@
 |-------------------|-------------------------------------------------|
 | **Curso**         | Construcción de Software II                     |
 | **Grupo**         | G04                                             |
-| **Integrante**    | David Anampa Chite                              |
+| **Integrante**    | David Anampa y Danilo Chite                     |
 | **Universidad**   | Universidad Privada de Tacna (UPT)              |
 | **Semestre**      | 2026 - II                                       |
 | **Rama activa**   | `UNIDAD-I`                                      |
@@ -193,11 +193,14 @@ Los casos de prueba documentados se encuentran en la carpeta `Casos de prueba_&_
 
 ---
 
-## 👤 Autor
+## 👤 Autores
 
-**David Anampa Chite**  
+**David Anampa**  
+**Danilo Chite**  
 Estudiante de Ingeniería de Sistemas — Universidad Privada de Tacna  
 📧 GitHub: [@David-Anampa](https://github.com/David-Anampa)
+📧 GitHub: [@Danilo314](https://github.com/Danilo314))
+
 
 ---
 
