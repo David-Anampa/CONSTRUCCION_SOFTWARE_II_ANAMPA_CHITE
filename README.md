@@ -19,7 +19,7 @@
 |-------------------|-------------------------------------------------|
 | **Curso**         | Construcción de Software II                     |
 | **Grupo**         | G04                                             |
-| **Integrante**    | David Anampa Chite                              |
+| **Integrante**    | David Anampa y Danilo Chite                     |
 | **Universidad**   | Universidad Privada de Tacna (UPT)              |
 | **Semestre**      | 2026 - II                                       |
 | **Rama activa**   | `UNIDAD-I`                                      |
