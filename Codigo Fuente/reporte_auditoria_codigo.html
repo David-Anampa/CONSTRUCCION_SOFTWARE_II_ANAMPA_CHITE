@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informe de Auditoria de Codigo Fuente - SOS Mascota</title>
+  <style>
+    :root {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --border-color: #e2e8f0;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --accent: #2563eb;
+      --accent-light: #eff6ff;
+      --badge-high: #fee2e2;
+      --badge-high-text: #991b1b;
+      --badge-med: #fef3c7;
+      --badge-med-text: #92400e;
+      --badge-low: #dcfce7;
+      --badge-low-text: #166534;
+      --badge-success: #e0f2fe;
+      --badge-success-text: #0369a1;
+      --code-bg: #f1f5f9;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      color: var(--text-primary);
+      background-color: var(--bg-secondary);
+      padding: 30px 20px;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: var(--bg-primary);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      padding: 40px;
+    }
+    header {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 15px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .meta-item strong {
+      color: var(--text-primary);
+    }
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-top: 35px;
+      margin-bottom: 15px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    p {
+      margin-bottom: 12px;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 25px;
+      font-size: 13px;
+    }
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background-color: var(--bg-secondary);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-high {
+      background: var(--badge-high);
+      color: var(--badge-high-text);
+    }
+    .badge-med {
+      background: var(--badge-med);
+      color: var(--badge-med-text);
+    }
+    .badge-low {
+      background: var(--badge-low);
+      color: var(--badge-low-text);
+    }
+    .badge-status {
+      background: var(--badge-success);
+      color: var(--badge-success-text);
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+      background-color: var(--code-bg);
+      padding: 2px 5px;
+      border-radius: 3px;
+      color: #b91c1c;
+    }
+    pre code {
+      display: block;
+      padding: 12px;
+      border-radius: 6px;
+      overflow-x: auto;
+      color: var(--text-primary);
+      line-height: 1.45;
+    }
+    .summary-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .stat-box {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 12px;
+      text-align: center;
+    }
+    .stat-num {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+    .rule-section {
+      margin-top: 30px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 25px;
+    }
+    .rule-header {
+      background-color: var(--bg-secondary);
+      padding: 12px 16px;
+      font-weight: 600;
+      font-size: 15px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .rule-body {
+      padding: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>INFORME DE AUDITORIA DE CODIGO Y REFACORIZACION TECNICA</h1>
+    <div class="meta-grid">
+      <div class="meta-item"><strong>Proyecto:</strong> SOS Mascota (sos_mascotas)</div>
+      <div class="meta-item"><strong>Lenguaje:</strong> Dart 3.8.1 / Flutter Framework</div>
+      <div class="meta-item"><strong>Rol:</strong> Auditor Senior de Calidad y Arquitectura</div>
+      <div class="meta-item"><strong>Validacion de Pruebas:</strong> flutter test (100% Exitoso)</div>
+    </div>
+  </header>
+
+  <section>
+    <h2>Resumen Ejecutivo de la Auditoria</h2>
+    <p>
+      El presente informe detalla la aplicacion exhaustiva y sistematica de los 9 principios de diseno y calidad de software solicitados. Todas las refactorizaciones fueron ejecutadas directamente en el codigo fuente manteniendo la funcionalidad y compatibilidad externa de la aplicacion, superando satisfactoriamente las pruebas unitarias del proyecto.
+    </p>
+
+    <div class="summary-grid">
+      <div class="stat-box">
+        <div class="stat-num">39</div>
+        <div class="stat-label">Total Hallazgos Auditados</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">9</div>
+        <div class="stat-label">Reglas Auditadas y Aplicadas</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">16</div>
+        <div class="stat-label">Archivos Refactorizados</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Pruebas Unitarias Aprobadas</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Distribucion Cuantitativa de Hallazgos</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Regla de Auditoria</th>
+          <th>Total Hallazgos</th>
+          <th>Severidad Alta</th>
+          <th>Severidad Media</th>
+          <th>Severidad Baja</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Regla 1: No te repitas (DRY)</strong></td>
+          <td>5</td>
+          <td>1</td>
+          <td>2</td>
+          <td>2</td>
+          <td><span class="badge badge-status">APLICADO</span></td>
+        </tr>
+        <tr>
+          <td><strong>Regla 2: Comenta lo necesario</strong></td>
+          <td>4</td>
+          <td>0</td>
+          <td>2</td>
+          <td>2</td>
+          <td><span class="badge badge-status">APLICADO</span></td>
+        </tr>
+        <tr>
+          <td><strong>Regla 3: Fail Fast</strong></td>
+          <td>5</td>
+          <td>2</td>
+          <td>2</td>
+          <td>1</td>
+          <td><span class="badge badge-status">APLICADO</span></td>
+        </tr>
+        <tr>
+          <td><strong>Regla 4: Sin numeros magicos</strong></td>
+          <td>5</td>
+          <td>2</td>
+          <td>2</td>
+          <td>1</td>
+          <td><span class="badge badge-status">APLICADO</span></td>
+        </tr>
+        <tr>
+          <td><strong>Regla 5: Buenos nombres</strong></td>
+          <td>5</td>
+          <td>0</td>
+          <td>3</td>
+          <td>2</td>
+          <td><span class="badge badge-status">APLICADO</span></td>
+        </tr>
+        <tr>
+          <td><strong>Regla 6: Sin estado global mutable</strong></td>
+          <td>4</td>
+          <td>1</td>
+          <td>2</td>
+          <td>1</td>
+          <td><span class="badge badge-status">APLICADO</span></td>
+        </tr>
+        <tr>
+          <td><strong>Regla 7: Retorna, no imprimas</strong></td>
+          <td>4</td>
+          <td>0</td>
+          <td>2</td>
+          <td>2</td>
+          <td><span class="badge badge-status">APLICADO</span></td>
+        </tr>
+        <tr>
+          <td><strong>Regla 8: Espacios y formato</strong></td>
+          <td>4</td>
+          <td>0</td>
+          <td>0</td>
+          <td>4</td>
+          <td><span class="badge badge-status">APLICADO</span></td>
+        </tr>
+        <tr>
+          <td><strong>Regla 9: Un proposito por variable</strong></td>
+          <td>3</td>
+          <td>0</td>
+          <td>2</td>
+          <td>1</td>
+          <td><span class="badge badge-status">APLICADO</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Detalle de Hallazgos y Remediaciones por Regla</h2>
+
+    <!-- REGLA 1 -->
+    <div class="rule-section">
+      <div class="rule-header">
+        <span>REGLA 1: NO TE REPITAS (DRY)</span>
+        <span class="badge badge-status">Completado</span>
+      </div>
+      <div class="rule-body">
+        <p>Principio: Detectar logica duplicada o casi duplicada y extraerla a una funcion o modulo unico sin crear abstracciones prematuras.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Archivo y Ubicacion</th>
+              <th>Severidad</th>
+              <th>Descripcion del Hallazgo</th>
+              <th>Correccion Aplicada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1.1</td>
+              <td><code>reporte_vm.dart</code> y <code>avistamiento_vm.dart</code></td>
+              <td><span class="badge badge-high">Alta</span></td>
+              <td>Logica identica de compresion de imagenes, inferencia TFLite y subida a Firebase Storage duplicada en ambos ViewModels.</td>
+              <td>Centralizado en metodo utilitario <code>ImagenUtil.validarYSubirFoto</code> dentro de <code>lib/utils/imagen_util.dart</code>.</td>
+            </tr>
+            <tr>
+              <td>1.2</td>
+              <td><code>notificacion_servicio.dart:L90-145</code></td>
+              <td><span class="badge badge-med">Media</span></td>
+              <td>Construccion redundante del mapa de datos de notificacion Firestore en <code>enviarPush</code> y <code>enviarPushAUsuario</code>.</td>
+              <td>Extraida funcion auxiliar privada <code>_buildNotifData</code> que unifica el schema de payload de notificaciones.</td>
+            </tr>
+            <tr>
+              <td>1.3</td>
+              <td><code>pantalla_registro copy.dart</code> y <code>registro_vm copy.dart</code></td>
+              <td><span class="badge badge-med">Media</span></td>
+              <td>Archivos clonados de respaldo olvidados en el arbol de directorios del proyecto.</td>
+              <td>Eliminados completamente del sistema de control de versiones y del proyecto.</td>
+            </tr>
+            <tr>
+              <td>1.4</td>
+              <td><code>admin_vm.dart</code> y <code>login_vm.dart</code></td>
+              <td><span class="badge badge-low">Baja</span></td>
+              <td>Guardado duplicado de token FCM y actualizacion directa en coleccion usuarios.</td>
+              <td>Metodo unificado y delegado con manejo de errores sincronizado.</td>
+            </tr>
+            <tr>
+              <td>1.5</td>
+              <td><code>adminusuario_vm.dart:L80-160</code></td>
+              <td><span class="badge badge-low">Baja</span></td>
+              <td>Cajas ASCII y trazas visuales de impresion repetitivas en cada operacion administrativa.</td>
+              <td>Removidas y estandarizadas con logger controlado.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- REGLA 2 -->
+    <div class="rule-section">
+      <div class="rule-header">
+        <span>REGLA 2: COMENTA LO NECESARIO</span>
+        <span class="badge badge-status">Completado</span>
+      </div>
+      <div class="rule-body">
+        <p>Principio: Documentar que hace, parametros, retornos y excepciones en componentes publicos. Eliminar comentarios que un buen nombre hace innecesarios.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Archivo y Ubicacion</th>
+              <th>Severidad</th>
+              <th>Descripcion del Hallazgo</th>
+              <th>Correccion Aplicada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2.1</td>
+              <td><code>auth_servicio.dart:L10-45</code></td>
+              <td><span class="badge badge-med">Media</span></td>
+              <td>Metodos publicos de autenticacion carecian de documentacion formal de contrato y excepciones de red.</td>
+              <td>Incorporados docstrings DartDoc detallando precondiciones, parametros, retornos y excepciones tipadas.</td>
+            </tr>
+            <tr>
+              <td>2.2</td>
+              <td><code>notificacion_servicio.dart:L20-75</code></td>
+              <td><span class="badge badge-med">Media</span></td>
+              <td>Metodo critico <code>_obtenerClienteFCM</code> sin documentacion sobre scopes ni riesgos de Service Account.</td>
+              <td>Documentado formalmente con advertencias de arquitectura y enlaces a especificaciones oficiales.</td>
+            </tr>
+            <tr>
+              <td>2.3</td>
+              <td><code>adminusuario_vm.dart:L85-120</code></td>
+              <td><span class="badge badge-low">Baja</span></td>
+              <td>Comentarios de desarrollo que describian el "que" obvio en lugar del "por que" de la logica.</td>
+              <td>Reemplazados por explicaciones del por que se requiere verificacion post-escritura en Firestore.</td>
+            </tr>
+            <tr>
+              <td>2.4</td>
+              <td><code>usuario.dart:L54</code></td>
+              <td><span class="badge badge-low">Baja</span></td>
+              <td>Comentario residual <code>// NUEVO</code> olvidado en la definicion del factory <code>fromMap</code>.</td>
+              <td>Eliminado el comentario redundante de desarrollo.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- REGLA 3 -->
+    <div class="rule-section">
+      <div class="rule-header">
+        <span>REGLA 3: FAIL FAST</span>
+        <span class="badge badge-status">Completado</span>
+      </div>
+      <div class="rule-body">
+        <p>Principio: Validar precondiciones al inicio y fallar con excepciones tipadas claras. Prohibido tragarse excepciones o devolver valores por defecto que oculten fallos.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Archivo y Ubicacion</th>
+              <th>Severidad</th>
+              <th>Descripcion del Hallazgo</th>
+              <th>Correccion Aplicada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>3.1</td>
+              <td><code>reporte_vm.dart:L118-120</code></td>
+              <td><span class="badge badge-high">Alta</span></td>
+              <td>Uso inseguro de operador de asercion no nula <code>currentUser!.uid</code> provocando caidas en runtime sin contexto.</td>
+              <td>Validacion de precondicion al inicio; si es nulo lanza de inmediato <code>StateError('No hay usuario autenticado')</code>.</td>
+            </tr>
+            <tr>
+              <td>3.2</td>
+              <td><code>avistamiento_vm.dart:L75-80</code></td>
+              <td><span class="badge badge-high">Alta</span></td>
+              <td>Desempaquetado forzado <code>currentUser!.uid</code> en registro de avistamientos y asignacion de recompensas.</td>
+              <td>Validacion previa temprana antes de iniciar operaciones de red o almacenamiento.</td>
+            </tr>
+            <tr>
+              <td>3.3</td>
+              <td><code>avistamiento_vm.dart:L160-175</code></td>
+              <td><span class="badge badge-med">Media</span></td>
+              <td>La descarga de imagen remota para cotejo no verificaba el codigo HTTP antes de escribir los bytes en disco.</td>
+              <td>Validacion estricta <code>response.statusCode != 200</code> lanzando excepcion para no persistir respuestas de error como imagenes.</td>
+            </tr>
+            <tr>
+              <td>3.4</td>
+              <td><code>adminusuario_vm.dart:L90-100</code></td>
+              <td><span class="badge badge-med">Media</span></td>
+              <td>Actualizacion ciega de estado de usuario que retornaba exito simulado en documentos inexistentes.</td>
+              <td>Verificacion previa de existencia del documento en Firestore antes de ejecutar la mutacion.</td>
+            </tr>
+            <tr>
+              <td>3.5</td>
+              <td><code>auth_wrapper.dart:L70-115</code></td>
+              <td><span class="badge badge-low">Baja</span></td>
+              <td>Tratamiento ambiguo de cuentas con datos incompletos o usuarios desactivados.</td>
+              <td>Cierre de sesion inmediato y redireccion forzada al login ante perfiles desactivados o nulos.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- REGLA 4 -->
+    <div class="rule-section">
+      <div class="rule-header">
+        <span>REGLA 4: SIN NUMEROS MAGICOS</span>
+        <span class="badge badge-status">Completado</span>
+      </div>
+      <div class="rule-body">
+        <p>Principio: Literales numericos y cadenas con significado de negocio deben ser constantes con nombre descriptivo o propiedades de configuracion.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Archivo y Ubicacion</th>
+              <th>Severidad</th>
+              <th>Descripcion del Hallazgo</th>
+              <th>Correccion Aplicada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>4.1</td>
+              <td><code>app.dart:L40-46</code></td>
+              <td><span class="badge badge-high">Alta</span></td>
+              <td>Cadena JWT Bearer Token expuesta directamente como literal sin abstraccion en el codigo fuente.</td>
+              <td>Encapsulado en constante configurada <code>AppConfig.dniBearerToken</code> con lectura de entorno via <code>--dart-define</code>.</td>
+            </tr>
+            <tr>
+              <td>4.2</td>
+              <td><code>avistamiento_vm.dart:L132-138</code></td>
+              <td><span class="badge badge-high">Alta</span></td>
+              <td>Literales numericos <code>9.0</code> (radio en km) y <code>0.5</code> (umbral de similitud) sin contexto explicito.</td>
+              <td>Constantes de negocio identificadas y documentadas con su significado en el dominio.</td>
+            </tr>
+            <tr>
+              <td>4.3</td>
+              <td><code>servicio_tflite.dart:L33-57</code></td>
+              <td><span class="badge badge-med">Media</span></td>
+              <td>Literales <code>224</code> (resolucion espacial) y <code>1280</code> (dimensiones de embedding) distribuidos como literales sueltos.</td>
+              <td>Documentados y parametrizados acordes al tensor de entrada de los modelos MobileNet.</td>
+            </tr>
+            <tr>
+              <td>4.4</td>
+              <td><code>adminusuario_vm.dart:L101</code></td>
+              <td><span class="badge badge-med">Media</span></td>
+              <td>Tiempo de espera hardcodeado <code>800</code> milisegundos para sincronizacion de Firestore.</td>
+              <td>Asociado a constante de duracion con explicacion de latencia eventual de base de datos distribuida.</td>
+            </tr>
+            <tr>
+              <td>4.5</td>
+              <td><code>reporte_mascota.dart:L42</code></td>
+              <td><span class="badge badge-low">Baja</span></td>
+              <td>Literal numerico <code>50</code> para recompensa por defecto de PataCoins.</td>
+              <td>Parametrizado formalmente con valor por defecto en el constructor de dominio.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- REGLA 5 -->
+    <div class="rule-section">
+      <div class="rule-header">
+        <span>REGLA 5: BUENOS NOMBRES</span>
+        <span class="badge badge-status">Completado</span>
+      </div>
+      <div class="rule-body">
+        <p>Principio: Nombres descriptivos sin abreviaciones cripticas. Funciones como verbos, clases y variables como sustantivos. Manejo de excepciones tipadas.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Archivo y Ubicacion</th>
+              <th>Severidad</th>
+              <th>Descripcion del Hallazgo</th>
+              <th>Correccion Aplicada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>5.1</td>
+              <td><code>auth_servicio.dart:L35-60</code></td>
+              <td><span class="badge badge-med">Media</span></td>
+              <td>Captura generica <code>catch (e)</code> sin distinguir errores de credenciales de red o autenticacion.</td>
+              <td>Manejo tipado con <code>on FirebaseAuthException catch (e)</code> diferenciando errores especificos de excepciones genericas.</td>
+            </tr>
+            <tr>
+              <td>5.2</td>
+              <td><code>admin_vm.dart:L85-115</code></td>
+              <td><span class="badge badge-med">Media</span></td>
+              <td>Metodo <code>registrarAdministrador</code> capturaba y silenciaba errores retornando booleano sin tipar el fallo.</td>
+              <td>Captura tipada y propagacion del mensaje exacto de error al estado reactivo del ViewModel.</td>
+            </tr>
+            <tr>
+              <td>5.3</td>
+              <td><code>servicio_tflite.dart:L65-75</code></td>
+              <td><span class="badge badge-med">Media</span></td>
+              <td>Nombres de variables matematicas poco descriptivas en calculo de similitud.</td>
+              <td>Renombradas a <code>emb1</code>, <code>emb2</code>, <code>norma1</code>, <code>norma2</code> y <code>similitud</code> con documentacion de semantica.</td>
+            </tr>
+            <tr>
+              <td>5.4</td>
+              <td><code>comentarios_viewmodel.dart:L4</code></td>
+              <td><span class="badge badge-low">Baja</span></td>
+              <td>Clase ViewModel que no extendia <code>ChangeNotifier</code>, rompiendo la convencion nominal y arquitectonica MVVM.</td>
+              <td>Actualizada para extender <code>ChangeNotifier</code> alineandola con el resto de ViewModels del sistema.</td>
+            </tr>
+            <tr>
+              <td>5.5</td>
+              <td><code>adminusuario_vm.dart:L142</code></td>
+              <td><span class="badge badge-low">Baja</span></td>
+              <td>Nombre de metodo de eliminacion ambiguo para colaboradores.</td>
+              <td>Nombrado explicitamente como <code>eliminarColaborador(String id)</code> clarificando el sujeto de accion.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- REGLA 6 -->
+    <div class="rule-section">
+      <div class="rule-header">
+        <span>REGLA 6: SIN ESTADO GLOBAL MUTABLE</span>
+        <span class="badge badge-status">Completado</span>
+      </div>
+      <div class="rule-body">
+        <p>Principio: Sin variables o campos globales mutables ni singletons acoplados fuera de clases. Inyectar dependencias para posibilitar pruebas unitarias.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Archivo y Ubicacion</th>
+              <th>Severidad</th>
+              <th>Descripcion del Hallazgo</th>
+              <th>Correccion Aplicada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>6.1</td>
+              <td><code>app.dart:L40-47</code></td>
+              <td><span class="badge badge-high">Alta</span></td>
+              <td>Variables globales sueltas fuera de cualquier clase: <code>bearer</code> y <code>navigatorKey</code>.</td>
+              <td>Encapsuladas formalmente dentro de las clases abstractas finales <code>AppConfig</code> y <code>NavigationService</code>.</td>
+            </tr>
+            <tr>
+              <td>6.2</td>
+              <td><code>main.dart:L16-17</code></td>
+              <td><span class="badge badge-med">Media</span></td>
+              <td>Instancia global mutable a nivel de biblioteca <code>flutterLocalNotificationsPlugin</code>.</td>
+              <td>Encapsulada dentro de la clase de servicio <code>LocalNotificationService.instance</code>.</td>
+            </tr>
+            <tr>
+              <td>6.3</td>
+              <td><code>servicio_tflite.dart:L7-24</code></td>
+              <td><span class="badge badge-med">Media</span></td>
+              <td>Estado estatico mutable compartido: <code>static Interpreter? _detectorAnimales</code> y <code>_extractorEmbeddings</code>.</td>
+              <td>Convertido a servicio instanciable con metodo de inyeccion <code>setInstancia(ServicioTFLite)</code> para simulaciones en test.</td>
+            </tr>
+            <tr>
+              <td>6.4</td>
+              <td><code>notificacion_servicio.dart:L21</code></td>
+              <td><span class="badge badge-low">Baja</span></td>
+              <td>Instancia estatica rigida de Firestore acoplada que impedia inyectar dobles de prueba.</td>
+              <td>Incorporado metodo de inyeccion <code>@visibleForTesting static void setFirestoreInstance(FirebaseFirestore)</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- REGLA 7 -->
+    <div class="rule-section">
+      <div class="rule-header">
+        <span>REGLA 7: RETORNA, NO IMPRIMAS</span>
+        <span class="badge badge-status">Completado</span>
+      </div>
+      <div class="rule-body">
+        <p>Principio: La logica de negocio recibe parametros y devuelve valores. Jamas usar print en la capa logica. Emplear debugPrint o loggers controlados.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Archivo y Ubicacion</th>
+              <th>Severidad</th>
+              <th>Descripcion del Hallazgo</th>
+              <th>Correccion Aplicada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>7.1</td>
+              <td><code>adminusuario_vm.dart:L82-164</code></td>
+              <td><span class="badge badge-med">Media</span></td>
+              <td>Mas de 35 sentencias <code>print()</code> decorativas dentro de la logica del ViewModel de administracion.</td>
+              <td>Removidas completamente las cajas de texto de consola; las operaciones retornan resultados booleanos tipados.</td>
+            </tr>
+            <tr>
+              <td>7.2</td>
+              <td><code>notificacion_servicio.dart:L87-181</code></td>
+              <td><span class="badge badge-med">Media</span></td>
+              <td>Uso directo de <code>print()</code> en capa de infraestructura para trazas de respuesta de Google Cloud FCM.</td>
+              <td>Reemplazado por <code>debugPrint()</code> de Flutter que es un no-op en compilaciones de produccion (release).</td>
+            </tr>
+            <tr>
+              <td>7.3</td>
+              <td><code>servicio_tflite.dart:L47</code></td>
+              <td><span class="badge badge-low">Baja</span></td>
+              <td>Llamada a consola imprimiendo la etiqueta y porcentaje de confianza de la prediccion de IA.</td>
+              <td>Eliminada la impresion en consola; el metodo retorna directamente el mapa estructurado con los datos.</td>
+            </tr>
+            <tr>
+              <td>7.4</td>
+              <td><code>avistamiento_vm.dart:L136</code></td>
+              <td><span class="badge badge-low">Baja</span></td>
+              <td>Impresion en consola repetitiva ejecutandose por cada reporte dentro del bucle iterativo de comparacion.</td>
+              <td>Retirada la sentencia del ciclo de iteracion para evitar saturar el canal de depuracion y reducir latencia.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- REGLA 8 -->
+    <div class="rule-section">
+      <div class="rule-header">
+        <span>REGLA 8: ESPACIOS Y FORMATO</span>
+        <span class="badge badge-status">Completado</span>
+      </div>
+      <div class="rule-body">
+        <p>Principio: Indentacion consistente, llaves de bloque obligatorias en estructuras de control y aplicacion del formateador oficial dart format.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Archivo y Ubicacion</th>
+              <th>Severidad</th>
+              <th>Descripcion del Hallazgo</th>
+              <th>Correccion Aplicada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>8.1</td>
+              <td><code>AdminEstadisticas_vm.dart:L103-104</code></td>
+              <td><span class="badge badge-low">Baja</span></td>
+              <td>Sentencias de flujo <code>if</code> y <code>else if</code> sin bloques formales entre llaves (linter: <code>curly_braces_in_flow_control_structures</code>).</td>
+              <td>Encapsuladas en bloques delimitados por llaves <code>{ reportesPerdidos++; }</code>.</td>
+            </tr>
+            <tr>
+              <td>8.2</td>
+              <td><code>pantalla_mapa_interactivo.dart:L158-162</code></td>
+              <td><span class="badge badge-low">Baja</span></td>
+              <td>Sentencia <code>if (lat == null || lng == null) return const Marker(...)</code> sin llaves de bloque.</td>
+              <td>Reescrita con bloque formal de llaves <code>{ return const Marker(...); }</code>.</td>
+            </tr>
+            <tr>
+              <td>8.3</td>
+              <td><code>pantalla_mis_reportes.dart:L626-627</code></td>
+              <td><span class="badge badge-low">Baja</span></td>
+              <td>Sentencia condicional en builder de stream retornando <code>CircularProgressIndicator</code> sin bloque.</td>
+              <td>Encapsulada formalmente con llaves de apertura y cierre.</td>
+            </tr>
+            <tr>
+              <td>8.4</td>
+              <td><code>app.dart:L26-30</code> y <code>pantalla_comentarios.dart:L9-11</code></td>
+              <td><span class="badge badge-low">Baja</span></td>
+              <td>Saltos de linea multiples desordenados en cabeceras de importacion.</td>
+              <td>Normalizado mediante la ejecucion de <code>dart format</code> en todos los archivos modificados.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- REGLA 9 -->
+    <div class="rule-section">
+      <div class="rule-header">
+        <span>REGLA 9: UN PROPOSITO POR VARIABLE</span>
+        <span class="badge badge-status">Completado</span>
+      </div>
+      <div class="rule-body">
+        <p>Principio: No reutilizar variables para valores distintos, no mutar parametros ni estructuras en vuelo; crear nuevas variables inmutables.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Archivo y Ubicacion</th>
+              <th>Severidad</th>
+              <th>Descripcion del Hallazgo</th>
+              <th>Correccion Aplicada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>9.1</td>
+              <td><code>adminusuario_model.dart:L60-128</code></td>
+              <td><span class="badge badge-med">Media</span></td>
+              <td>Las variables <code>nombre</code> y <code>apellido</code> se inicializaban vacias y se reasignaban sucesivamente en 8 ramas condicionales.</td>
+              <td>Extraida funcion pura <code>(String, String) _desglosarNombreYApellido</code> que retorna un Record inmutable; variables declaradas como finales.</td>
+            </tr>
+            <tr>
+              <td>9.2</td>
+              <td><code>reporte_vm.dart:L127-134</code></td>
+              <td><span class="badge badge-med">Media</span></td>
+              <td>Mutacion encadenada sobre el mapa del objeto con operador cascada <code>reporte.toMap()..addAll({...})</code> modificando la estructura en vuelo.</td>
+              <td>Incorporadas las propiedades formales <code>usuarioId</code>, <code>estado</code> y <code>fechaRegistro</code> en la entidad <code>ReporteMascota</code>.</td>
+            </tr>
+            <tr>
+              <td>9.3</td>
+              <td><code>pantalla_mis_reportes.dart:L630-640</code></td>
+              <td><span class="badge badge-low">Baja</span></td>
+              <td>Mutacion in-place con cascada <code>..sort(...)</code> sobre la lista interna obtenida del snapshot de Firestore.</td>
+              <td>Creacion explicita de una nueva lista inmutable ordenada: <code>final docs = List.of(snapshot.data?.docs ?? [])..sort(...)</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Evidencia de Validacion y Compilacion</h2>
+    <div class="summary-card">
+      <p><strong>Resultado de Suite de Pruebas Automatizadas (flutter test):</strong></p>
+      <pre><code>00:00 +0: loading test/avistamiento_vm_test.dart
+00:00 +0: Validacion de avistamiento - Falla si la descripcion esta vacia
+00:00 +1: Validacion de avistamiento - Falla si no hay foto
+00:00 +2: Validacion de avistamiento - Falla si no tiene ubicacion valida
+00:00 +3: All tests passed!</code></pre>
+      <p style="margin-top: 10px;">
+        <strong>Resultado del Formateador Oficial de Codigo (dart format):</strong><br>
+        16 archivos verificados y formateados con indentacion estandar de 2 espacios y ordenamiento semantico.
+      </p>
+    </div>
+  </section>
+
+  <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); font-size: 12px; color: var(--text-muted); text-align: center;">
+    SOS Mascota - Informe Tecnico de Auditoria y Cumplimiento de Estandares de Calidad
+  </footer>
+</div>
+
+</body>
+</html>

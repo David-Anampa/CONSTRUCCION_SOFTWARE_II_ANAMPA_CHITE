@@ -1,0 +1,51 @@
+[ÔêÜ] Flutter (Channel stable, 3.35.6, on Microsoft Windows [Versi┬ón 10.0.19045.6466], locale es-PE) [611ms]
+    ÔÇó Flutter version 3.35.6 on channel stable at C:\flutter
+    ÔÇó Upstream repository https://github.com/flutter/flutter.git
+    ÔÇó Framework revision 9f455d2486 (1 year, 1 month ago), 2025-10-08 14:55:31 -0500
+    ÔÇó Engine revision d2913632a4
+    ÔÇó Dart version 3.9.2
+    ÔÇó DevTools version 2.48.0
+    ÔÇó Feature flags: enable-web, enable-linux-desktop, enable-macos-desktop, enable-windows-desktop, enable-android, enable-ios, cli-animations, enable-lldb-debugging
+
+[ÔêÜ] Windows Version (10 Pro 64 bits, 22H2, 2009) [6,6s]
+
+[!] Android toolchain - develop for Android devices (Android SDK version 36.1.0-rc1) [5,1s]
+    ÔÇó Android SDK at C:\Users\Usuario\AppData\Local\Android\sdk
+    ÔÇó Emulator version 36.1.9.0 (build_id 13823996) (CL:N/A)
+    ÔÇó Platform android-36, build-tools 36.1.0-rc1
+    ÔÇó Java binary at: C:\Program Files\Android\Android Studio\jbr\bin\java
+      This is the JDK bundled with the latest Android Studio installation on this machine.
+      To manually set the JDK path, use: `flutter config --jdk-dir="path/to/jdk"`.
+    ÔÇó Java version OpenJDK Runtime Environment (build 21.0.6+-13391695-b895.109)
+    ! Some Android licenses not accepted. To resolve this, run: flutter doctor --android-licenses
+
+[ÔêÜ] Chrome - develop for the web [193ms]
+    ÔÇó Chrome at C:\Program Files\Google\Chrome\Application\chrome.exe
+
+[ÔêÜ] Visual Studio - develop Windows apps (Visual Studio Community 2019 16.11.43) [191ms]
+    ÔÇó Visual Studio at C:\Program Files (x86)\Microsoft Visual Studio\2019\Community
+    ÔÇó Visual Studio Community 2019 version 16.11.35706.149
+    ÔÇó Windows 10 SDK version 10.0.19041.0
+
+[ÔêÜ] Android Studio (version 2025.1.2) [11ms]
+    ÔÇó Android Studio at C:\Program Files\Android\Android Studio
+    ÔÇó Flutter plugin can be installed from:
+       https://plugins.jetbrains.com/plugin/9212-flutter
+    ÔÇó Dart plugin can be installed from:
+       https://plugins.jetbrains.com/plugin/6351-dart
+    ÔÇó Java version OpenJDK Runtime Environment (build 21.0.6+-13391695-b895.109)
+
+[ÔêÜ] VS Code (version unknown) [8ms]
+    ÔÇó VS Code at C:\Users\Usuario\AppData\Local\Programs\Microsoft VS Code
+    ÔÇó Flutter extension version 3.142.0
+    X Unable to determine VS Code version.
+
+[ÔêÜ] Connected device (3 available) [2,4s]
+    ÔÇó Windows (desktop) ÔÇó windows ÔÇó windows-x64    ÔÇó Microsoft Windows [Versi┬ón 10.0.19045.6466]
+    ÔÇó Chrome (web)      ÔÇó chrome  ÔÇó web-javascript ÔÇó Google Chrome 155.0.8059.84
+    ÔÇó Edge (web)        ÔÇó edge    ÔÇó web-javascript ÔÇó Microsoft Edge 155.0.4283.62
+
+[ÔêÜ] Network resources [523ms]
+    ÔÇó All expected network resources are available.
+
+! Doctor found issues in 1 category.

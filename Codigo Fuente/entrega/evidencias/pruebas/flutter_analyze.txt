@@ -1,0 +1,147 @@
+Analyzing C├│digo Fuente...                                      
+
+   info - The file name 'AdminEstadisticas.dart' isn't a lower_case_with_underscores identifier - lib\modelo\AdminEstadisticas.dart:1:1 - file_names
+   info - The file name 'AdminNotificacion.dart' isn't a lower_case_with_underscores identifier - lib\modelo\AdminNotificacion.dart:1:1 - file_names
+   info - The file name 'AdminReporte.dart' isn't a lower_case_with_underscores identifier - lib\modelo\AdminReporte.dart:1:1 - file_names
+   info - Don't invoke 'print' in production code - lib\utils\auth_wrapper.dart:35:11 - avoid_print
+   info - Don't invoke 'print' in production code - lib\utils\auth_wrapper.dart:75:15 - avoid_print
+   info - Don't invoke 'print' in production code - lib\utils\auth_wrapper.dart:111:15 - avoid_print
+   info - Don't invoke 'print' in production code - lib\utils\auth_wrapper.dart:122:13 - avoid_print
+   info - Don't invoke 'print' in production code - lib\utils\auth_wrapper.dart:123:13 - avoid_print
+   info - Don't invoke 'print' in production code - lib\utils\auth_wrapper.dart:124:13 - avoid_print
+   info - Don't invoke 'print' in production code - lib\utils\auth_wrapper.dart:128:15 - avoid_print
+   info - Don't invoke 'print' in production code - lib\utils\auth_wrapper.dart:175:13 - avoid_print
+   info - The file name 'PantallaAdminEstadisticas.dart' isn't a lower_case_with_underscores identifier - lib\vista\admin\PantallaAdminEstadisticas.dart:1:1 - file_names
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\PantallaAdminEstadisticas.dart:180:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\PantallaAdminEstadisticas.dart:231:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\PantallaAdminEstadisticas.dart:327:29 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\PantallaAdminEstadisticas.dart:442:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\PantallaAdminEstadisticas.dart:504:29 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\PantallaAdminEstadisticas.dart:605:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\PantallaAdminEstadisticas.dart:774:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\PantallaAdminEstadisticas.dart:865:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\PantallaAdminEstadisticas.dart:914:44 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\PantallaAdminEstadisticas.dart:981:46 - deprecated_member_use
+   info - The file name 'pantallaAdminNotificaciones.dart' isn't a lower_case_with_underscores identifier - lib\vista\admin\pantallaAdminNotificaciones.dart:1:1 - file_names
+   info - Don't use 'BuildContext's across async gaps - lib\vista\admin\pantallaAdminNotificaciones.dart:20:18 - use_build_context_synchronously
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\vista\admin\pantallaAdminNotificaciones.dart:125:13 - deprecated_member_use
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\vista\admin\pantallaAdminNotificaciones.dart:153:13 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\pantallaAdminNotificaciones.dart:241:36 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\pantallaAdminNotificaciones.dart:318:56 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\pantallaAdminNotificaciones.dart:371:36 - deprecated_member_use
+   info - The file name 'pantallaAdminReporte.dart' isn't a lower_case_with_underscores identifier - lib\vista\admin\pantallaAdminReporte.dart:1:1 - file_names
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\pantallaAdminReporte.dart:272:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\pantallaAdminReporte.dart:307:36 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\pantallaAdminReporte.dart:478:33 - deprecated_member_use
+   info - The imported package 'intl' isn't a dependency of the importing package - lib\vista\admin\pantalla_adminusuarios.dart:3:8 - depend_on_referenced_packages
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\pantalla_adminusuarios.dart:186:48 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\pantalla_adminusuarios.dart:352:22 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\pantalla_adminusuarios.dart:354:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\pantalla_inicio_admin.dart:37:37 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\pantalla_inicio_admin.dart:287:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\pantalla_inicio_admin.dart:299:28 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\pantalla_inicio_admin.dart:335:28 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\vista\admin\pantalla_perfil_admin.dart:90:30 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\vista\admin\pantalla_perfil_admin.dart:111:32 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\vista\admin\pantalla_perfil_admin.dart:120:32 - use_build_context_synchronously
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\pantalla_perfil_admin.dart:181:45 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\pantalla_perfil_admin.dart:212:55 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\pantalla_perfil_admin.dart:400:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\pantalla_perfil_admin.dart:446:35 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\admin\pantalla_perfil_admin.dart:457:35 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\auth\pantalla_recuperar.dart:118:36 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\auth\pantalla_recuperar.dart:150:37 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps - lib\vista\auth\pantalla_verifica_email.dart:46:28 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\auth\pantalla_verifica_email.dart:51:28 - use_build_context_synchronously
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\chat\pantalla_chat.dart:358:43 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\chat\pantalla_chat.dart:555:45 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\chat\pantalla_chats_activos.dart:230:33 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\vista\mapa\pantalla_mapa_interactivo.dart:100:9 - use_build_context_synchronously
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\mapa\pantalla_mapa_interactivo.dart:233:35 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_avistamiento.dart:106:28 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_avistamiento.dart:124:28 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_avistamiento.dart:131:28 - use_build_context_synchronously
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\reportes\pantalla_avistamiento.dart:234:63 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\vista\reportes\pantalla_avistamiento.dart:513:50 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\vista\reportes\pantalla_avistamiento.dart:521:43 - use_build_context_synchronously
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\reportes\pantalla_avistamiento.dart:537:48 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\vista\reportes\pantalla_comentarios_reporte.dart:185:30 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\vista\reportes\pantalla_comentarios_reporte.dart:248:30 - use_build_context_synchronously
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\reportes\pantalla_comentarios_reporte.dart:382:33 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_comentarios_reporte.dart:546:45 - use_build_context_synchronously
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\reportes\pantalla_comentarios_reporte.dart:578:35 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\vista\reportes\pantalla_detalle_completo.dart:102:9 - use_build_context_synchronously
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\reportes\pantalla_detalle_completo.dart:397:53 - deprecated_member_use
+   info - Don't invoke 'print' in production code - lib\vista\reportes\pantalla_mis_reportes.dart:123:9 - avoid_print
+   info - Don't invoke 'print' in production code - lib\vista\reportes\pantalla_mis_reportes.dart:134:11 - avoid_print
+   info - Don't invoke 'print' in production code - lib\vista\reportes\pantalla_mis_reportes.dart:136:11 - avoid_print
+   info - Don't invoke 'print' in production code - lib\vista\reportes\pantalla_mis_reportes.dart:139:9 - avoid_print
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_mis_reportes.dart:396:28 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_mis_reportes.dart:407:7 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_mis_reportes.dart:428:28 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_mis_reportes.dart:449:30 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_mis_reportes.dart:469:30 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_mis_reportes.dart:479:9 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_mis_reportes.dart:504:26 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_mis_reportes.dart:576:29 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_mis_reportes.dart:577:36 - use_build_context_synchronously
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\reportes\pantalla_mis_reportes.dart:688:41 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_mis_reportes.dart:763:37 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_mis_reportes.dart:767:27 - use_build_context_synchronously
+   info - 'Share' is deprecated and shouldn't be used. Use SharePlus instead - lib\vista\reportes\pantalla_mis_reportes.dart:783:41 - deprecated_member_use
+   info - 'shareXFiles' is deprecated and shouldn't be used. Use SharePlus.instance.share() instead - lib\vista\reportes\pantalla_mis_reportes.dart:783:47 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_mis_reportes.dart:786:49 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_reporte_mascota.dart:231:48 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_reporte_mascota.dart:252:48 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_reporte_mascota.dart:261:48 - use_build_context_synchronously
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\reportes\pantalla_reporte_mascota.dart:326:61 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_reporte_mascota.dart:395:50 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_reporte_mascota.dart:417:50 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_reporte_mascota.dart:426:50 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_reporte_mascota.dart:466:50 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_reporte_mascota.dart:487:50 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\reportes\pantalla_reporte_mascota.dart:496:50 - use_build_context_synchronously
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\vista\reportes\pantalla_reporte_mascota.dart:545:15 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\reportes\pantalla_reporte_mascota.dart:1102:46 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\reportes\pantalla_ver_reportes.dart:194:43 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\reportes\pantalla_ver_reportes.dart:251:56 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\vista\reportes\video_recorte_page.dart:74:52 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\vista\reportes\video_recorte_page.dart:79:45 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\vista\usuario\pantalla_comentarios.dart:75:30 - use_build_context_synchronously
+   info - Uses 'await' on an instance of 'Reference', which is not a subtype of 'Future' - lib\vista\usuario\pantalla_comentarios.dart:106:23 - await_only_futures
+   info - Don't use 'BuildContext's across async gaps - lib\vista\usuario\pantalla_comentarios.dart:113:9 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\usuario\pantalla_comentarios.dart:117:9 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\usuario\pantalla_comentarios.dart:170:9 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\usuario\pantalla_comentarios.dart:174:9 - use_build_context_synchronously
+   info - 'Share' is deprecated and shouldn't be used. Use SharePlus instead - lib\vista\usuario\pantalla_comentarios.dart:532:37 - deprecated_member_use
+   info - 'share' is deprecated and shouldn't be used. Use SharePlus.instance.share() instead - lib\vista\usuario\pantalla_comentarios.dart:532:43 - deprecated_member_use
+warning - Unnecessary cast - lib\vista\usuario\pantalla_inicio.dart:45:22 - unnecessary_cast
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\vista\usuario\pantalla_inicio.dart:101:11 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\vista\usuario\pantalla_notificacion.dart:20:18 - use_build_context_synchronously
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\usuario\pantalla_notificacion.dart:245:37 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\vista\usuario\pantalla_notificacion.dart:261:34 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\vista\usuario\replies_page.dart:48:30 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\vista\usuario\replies_page.dart:120:30 - use_build_context_synchronously
+   info - Use the null-aware operator '?.' rather than an explicit 'null' comparison - lib\vista\usuario\replies_page.dart:177:35 - prefer_null_aware_operators
+   info - 'Share' is deprecated and shouldn't be used. Use SharePlus instead - lib\vista\usuario\replies_page.dart:297:37 - deprecated_member_use
+   info - 'share' is deprecated and shouldn't be used. Use SharePlus.instance.share() instead - lib\vista\usuario\replies_page.dart:297:43 - deprecated_member_use
+   info - The file name 'AdminEstadisticas_vm.dart' isn't a lower_case_with_underscores identifier - lib\vistamodelo\admin\AdminEstadisticas_vm.dart:1:1 - file_names
+   info - The file name 'AdminNotificaciones_vm.dart' isn't a lower_case_with_underscores identifier - lib\vistamodelo\admin\AdminNotificaciones_vm.dart:1:1 - file_names
+   info - The private field _usuariosSeleccionados could be 'final' - lib\vistamodelo\admin\AdminNotificaciones_vm.dart:31:16 - prefer_final_fields
+   info - The file name 'AdminReportes_vm.dart' isn't a lower_case_with_underscores identifier - lib\vistamodelo\admin\AdminReportes_vm.dart:1:1 - file_names
+   info - The private field _cargando could be 'final' - lib\vistamodelo\admin\adminusuario_vm.dart:10:8 - prefer_final_fields
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\image_background.dart:24:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\video_background.dart:52:39 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\video_background.dart:57:35 - deprecated_member_use
+   info - The imported package 'cloud_firestore_platform_interface' isn't a dependency of the importing package - test\helpers\firebase_fakes.dart:9:8 - depend_on_referenced_packages
+   info - The imported package 'firebase_auth_platform_interface' isn't a dependency of the importing package - test\helpers\firebase_fakes.dart:10:8 - depend_on_referenced_packages
+   info - The imported package 'firebase_core_platform_interface' isn't a dependency of the importing package - test\helpers\firebase_fakes.dart:12:8 - depend_on_referenced_packages
+   info - Invalid use of a private type in a public API - test\helpers\firebase_fakes.dart:71:21 - library_private_types_in_public_api
+
+flutter : 137 issues found. (ran in 99.3s)
+En línea: 1 Carácter: 121
++ ... ub_get.txt; flutter analyze --no-pub *> $p\flutter_analyze.txt; flutt ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (137 issues found. (ran in 99.3s):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 

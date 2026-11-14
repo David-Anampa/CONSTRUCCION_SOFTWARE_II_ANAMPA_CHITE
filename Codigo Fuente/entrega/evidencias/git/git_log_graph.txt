@@ -1,0 +1,22 @@
+* feecec2 (HEAD -> UNIDAD-I, origin/UNIDAD-I) Docs Unidad I terminado
+* 5ed8893 docs y refactor: auditoria de codigo, refactorizaciones y documentacion tecnica Unidad I
+* 56d366c Update team members in README.md
+* fd80023 feat: Unidad I - SOS Mascota (codigo fuente Flutter/Firebase + documentacion)
+*   5f04826 WIP on UNIDAD-I: 872aa59 docs: README profesional - SOS Mascota (Construccion Software II)
+|\  
+| * 4ae35d1 index on UNIDAD-I: 872aa59 docs: README profesional - SOS Mascota (Construccion Software II)
+|/  
+| * 959e8d9 (refs/stash) WIP on UNIDAD-I: 872aa59 docs: README profesional - SOS Mascota (Construccion Software II)
+|/  
+* 872aa59 docs: README profesional - SOS Mascota (Construccion Software II)
+* 3cc5031 (UNIDAD-III, UNIDAD-II) unidad I
+* ae9ea00 Delete Especificaciones funcionales directory
+* dcf254e Delete Casos de prueba_&_Cat├ílogo de pruebas directory
+* cef380d Add files via upload
+* eb58ffb Add files via upload
+* 508edd4 Initial commit
+* 3a67516 (origin/main) Delete Especificaciones funcionales directory
+* 7b05f49 Delete Casos de prueba_&_Cat├ílogo de pruebas directory
+* 183ea8a Add files via upload
+* d34e7e1 Add files via upload
+* c0256ea Initial commit

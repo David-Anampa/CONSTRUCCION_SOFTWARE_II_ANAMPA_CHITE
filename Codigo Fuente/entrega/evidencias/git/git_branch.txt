@@ -1,0 +1,5 @@
+* UNIDAD-I                feecec2 Docs Unidad I terminado
+  UNIDAD-II               3cc5031 unidad I
+  UNIDAD-III              3cc5031 unidad I
+  remotes/origin/UNIDAD-I feecec2 Docs Unidad I terminado
+  remotes/origin/main     3a67516 Delete Especificaciones funcionales directory

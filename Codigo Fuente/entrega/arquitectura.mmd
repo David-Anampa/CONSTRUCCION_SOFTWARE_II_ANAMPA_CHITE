@@ -1,0 +1,32 @@
+flowchart TD
+    U["Usuario (ciudadano / colaborador / administrador)"]
+    subgraph APP["App móvil Flutter - Android (com.sosmascota) - MVVM"]
+        V["Vista (lib/vista)"]
+        VM["ViewModel - Provider (lib/vistamodelo)"]
+        M["Modelo (lib/modelo)"]
+        S["Servicios (lib/servicios)"]
+        TF["IA local TFLite: animales.tflite + extractor_animales.tflite"]
+        V --> VM --> M
+        VM --> S
+        S --> TF
+    end
+    subgraph FB["Firebase / Google Cloud - proyecto sosmascota-71d79 (BaaS serverless)"]
+        AU["Firebase Auth (correo/contraseña)"]
+        FS["Cloud Firestore + firestore.rules"]
+        ST["Cloud Storage (fotos/videos)"]
+        FCM["Firebase Cloud Messaging (topic 'mascotas')"]
+    end
+    subgraph EXT["Servicios externos"]
+        OSM["OpenStreetMap tiles + Nominatim"]
+        GM["Google Maps (enlace url_launcher)"]
+        FCMAPI["FCM HTTP v1 API (fcm.googleapis.com)"]
+    end
+    U --> V
+    S -->|HTTPS/TLS| AU
+    S -->|HTTPS/TLS| FS
+    S -->|HTTPS/TLS| ST
+    FCM -->|push| APP
+    S -->|OAuth2 Service Account| FCMAPI
+    FCMAPI --> FCM
+    V --> OSM
+    V --> GM

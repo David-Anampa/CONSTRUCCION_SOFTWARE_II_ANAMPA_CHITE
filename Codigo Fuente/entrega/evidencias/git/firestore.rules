@@ -1,0 +1,124 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function estaAutenticado() {
+      return request.auth != null;
+    }
+    function esDueno(uid) {
+      return estaAutenticado() && request.auth.uid == uid;
+    }
+
+    match /usuarios/{userId} {
+      allow read: if estaAutenticado();
+      allow create: if esDueno(userId);
+      allow update: if esDueno(userId);
+      allow delete: if esDueno(userId);
+    }
+
+    match /reportes_mascotas/{reporteId} {
+      allow read: if estaAutenticado();
+      allow create: if estaAutenticado()
+                    && request.resource.data.usuarioId == request.auth.uid;
+      allow update: if estaAutenticado()
+                    && (resource.data.usuarioId == request.auth.uid
+                        || request.resource.data.keys().hasOnly(['estado']));
+      allow delete: if estaAutenticado()
+                    && resource.data.usuarioId == request.auth.uid;
+
+      match /comentarios/{comentarioId} {
+        allow read: if estaAutenticado();
+        allow create: if estaAutenticado()
+                      && request.resource.data.uid == request.auth.uid;
+        allow update: if estaAutenticado()
+                      && (resource.data.uid == request.auth.uid
+                          || request.resource.data.keys().hasOnly(['likes']));
+        allow delete: if estaAutenticado()
+                      && resource.data.uid == request.auth.uid;
+      }
+    }
+
+    match /avistamientos/{avistamientoId} {
+      allow read: if estaAutenticado();
+      allow create: if estaAutenticado()
+                    && request.resource.data.usuarioId == request.auth.uid;
+      allow update: if estaAutenticado()
+                    && (resource.data.usuarioId == request.auth.uid
+                        || request.resource.data.keys().hasOnly(['reporteId', 'estado']));
+      allow delete: if estaAutenticado()
+                    && resource.data.usuarioId == request.auth.uid;
+
+      match /comentarios/{comentarioId} {
+        allow read: if estaAutenticado();
+        allow create: if estaAutenticado()
+                      && request.resource.data.uid == request.auth.uid;
+        allow update: if estaAutenticado()
+                      && (resource.data.uid == request.auth.uid
+                          || request.resource.data.keys().hasOnly(['likes']));
+        allow delete: if estaAutenticado()
+                      && resource.data.uid == request.auth.uid;
+      }
+    }
+
+    match /comentarios/{comentarioId} {
+      allow read: if estaAutenticado();
+      allow create: if estaAutenticado()
+                    && request.resource.data.uid == request.auth.uid;
+      allow update: if estaAutenticado()
+                    && (resource.data.uid == request.auth.uid
+                        || request.resource.data.keys().hasOnly(['likes', 'dislikes', 'shares']));
+      allow delete: if estaAutenticado()
+                    && resource.data.uid == request.auth.uid;
+
+      match /respuestas/{respuestaId} {
+        allow read: if estaAutenticado();
+        allow create: if estaAutenticado()
+                      && request.resource.data.uid == request.auth.uid;
+        allow update: if estaAutenticado()
+                      && (resource.data.uid == request.auth.uid
+                          || request.resource.data.keys().hasOnly(['likes']));
+        allow delete: if estaAutenticado()
+                      && resource.data.uid == request.auth.uid;
+      }
+    }
+
+    match /chats/{chatId} {
+      allow read: if estaAutenticado()
+                  && request.auth.uid in resource.data.usuarios;
+      allow create: if estaAutenticado()
+                    && request.auth.uid in request.resource.data.usuarios;
+      allow update: if estaAutenticado()
+                    && request.auth.uid in resource.data.usuarios;
+      allow delete: if false;
+
+      match /mensajes/{mensajeId} {
+        allow read: if estaAutenticado()
+                    && request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.usuarios;
+        allow create: if estaAutenticado()
+                      && request.resource.data.emisorId == request.auth.uid
+                      && request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.usuarios;
+        allow update: if estaAutenticado()
+                      && request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.usuarios;
+        allow delete: if false;
+      }
+    }
+
+    match /notificaciones/{notifId} {
+      allow read: if estaAutenticado()
+                  && resource.data.usuarioId == request.auth.uid;
+      allow create: if estaAutenticado();
+      allow update: if estaAutenticado()
+                    && resource.data.usuarioId == request.auth.uid;
+      allow delete: if estaAutenticado()
+                    && resource.data.usuarioId == request.auth.uid;
+    }
+
+    match /tokens/{tokenId} {
+      allow read, write: if estaAutenticado();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

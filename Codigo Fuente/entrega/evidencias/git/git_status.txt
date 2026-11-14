@@ -1,0 +1,153 @@
+On branch UNIDAD-I
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   .gitignore
+	modified:   .metadata
+	deleted:    DICCIONARIO_DE_DATOS_SOS_MASCOTA.md
+	deleted:    INFORME_LABORATORIO_01_REVISION_CODIGO.md
+	deleted:    PLANIFICACION_SPRINTS_SOS_MASCOTA.md
+	deleted:    PLAN_DE_DESPLIEGUE_SOS_MASCOTA.md
+	deleted:    PLAN_DE_ITERACION_SOS_MASCOTA.md
+	deleted:    PLAN_DE_MANTENIMIENTO_SOS_MASCOTA.md
+	deleted:    PLAN_DE_PRUEBAS_SOS_MASCOTA.md
+	deleted:    PLAN_DE_RIESGOS_SOS_MASCOTA.md
+	modified:   README.md
+	modified:   analysis_options.yaml
+	modified:   android/.gitignore
+	modified:   android/app/build.gradle.kts
+	modified:   android/app/proguard-rules.pro
+	modified:   android/app/src/debug/AndroidManifest.xml
+	modified:   android/app/src/main/AndroidManifest.xml
+	modified:   android/app/src/main/kotlin/com/example/sos_mascotas/MainActivity.kt
+	modified:   android/app/src/main/res/values-night/styles.xml
+	modified:   android/app/src/main/res/values/styles.xml
+	modified:   android/app/src/profile/AndroidManifest.xml
+	modified:   android/build.gradle.kts
+	modified:   android/gradle.properties
+	modified:   android/gradle/wrapper/gradle-wrapper.properties
+	modified:   android/settings.gradle.kts
+	modified:   ios/.gitignore
+	modified:   ios/Flutter/AppFrameworkInfo.plist
+	modified:   ios/Flutter/Debug.xcconfig
+	modified:   ios/Flutter/Release.xcconfig
+	modified:   ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
+	modified:   ios/Runner/AppDelegate.swift
+	modified:   ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md
+	modified:   ios/Runner/Base.lproj/Main.storyboard
+	modified:   ios/Runner/Runner-Bridging-Header.h
+	modified:   ios/RunnerTests/RunnerTests.swift
+	modified:   lib/app.dart
+	modified:   lib/main.dart
+	modified:   lib/modelo/AdminEstadisticas.dart
+	modified:   lib/modelo/AdminNotificacion.dart
+	modified:   lib/modelo/AdminReporte.dart
+	modified:   lib/modelo/adminusuario_model.dart
+	modified:   lib/modelo/avistamiento.dart
+	modified:   lib/modelo/comentario_model.dart
+	modified:   lib/modelo/notificacion.dart
+	modified:   lib/modelo/reporte_mascota.dart
+	modified:   lib/modelo/usuario.dart
+	deleted:    lib/servicios/api_dni_servicio.dart
+	modified:   lib/servicios/auth_servicio.dart
+	modified:   lib/servicios/firestore_servicio.dart
+	modified:   lib/servicios/notificacion_servicio.dart
+	modified:   lib/servicios/servicio_tflite.dart
+	modified:   lib/utils/auth_wrapper.dart
+	modified:   lib/utils/imagen_util.dart
+	modified:   lib/vista/admin/PantallaAdminEstadisticas.dart
+	modified:   lib/vista/admin/pantallaAdminNotificaciones.dart
+	modified:   lib/vista/admin/pantallaAdminReporte.dart
+	modified:   lib/vista/admin/pantalla_adminusuarios.dart
+	modified:   lib/vista/admin/pantalla_inicio_admin.dart
+	modified:   lib/vista/admin/pantalla_perfil_admin.dart
+	modified:   lib/vista/admin/pantalla_registro_admin.dart
+	modified:   lib/vista/auth/pantalla_login.dart
+	modified:   lib/vista/auth/pantalla_registro.dart
+	modified:   lib/vista/auth/pantalla_registro_especial.dart
+	modified:   lib/vista/auth/pantalla_verifica_email.dart
+	modified:   lib/vista/mapa/pantalla_mapa_interactivo.dart
+	modified:   lib/vista/reportes/pantalla_avistamiento.dart
+	modified:   lib/vista/reportes/pantalla_detalle_completo.dart
+	modified:   lib/vista/reportes/pantalla_detalle_reporte.dart
+	modified:   lib/vista/reportes/pantalla_mapa_osm.dart
+	modified:   lib/vista/reportes/pantalla_mis_reportes.dart
+	modified:   lib/vista/reportes/pantalla_reporte_mascota.dart
+	modified:   lib/vista/reportes/pantalla_ver_reportes.dart
+	modified:   lib/vista/reportes/video_recorte_page.dart
+	modified:   lib/vista/usuario/pantalla_comentarios.dart
+	modified:   lib/vista/usuario/pantalla_inicio.dart
+	modified:   lib/vista/usuario/pantalla_perfil.dart
+	modified:   lib/vista/usuario/replies_page.dart
+	modified:   lib/vistamodelo/admin/AdminEstadisticas_vm.dart
+	modified:   lib/vistamodelo/admin/AdminNotificaciones_vm.dart
+	modified:   lib/vistamodelo/admin/AdminReportes_vm.dart
+	modified:   lib/vistamodelo/admin/admin_vm.dart
+	modified:   lib/vistamodelo/admin/adminusuario_vm.dart
+	modified:   lib/vistamodelo/auth/login_vm.dart
+	modified:   lib/vistamodelo/auth/registro_vm.dart
+	modified:   lib/vistamodelo/comentarios/comentarios_viewmodel.dart
+	modified:   lib/vistamodelo/reportes/avistamiento_vm.dart
+	modified:   lib/vistamodelo/reportes/reporte_vm.dart
+	modified:   lib/vistamodelo/usuario/perfil_vm.dart
+	modified:   lib/widgets/image_background.dart
+	modified:   lib/widgets/video_background.dart
+	modified:   linux/.gitignore
+	modified:   linux/CMakeLists.txt
+	modified:   linux/flutter/CMakeLists.txt
+	modified:   linux/flutter/generated_plugins.cmake
+	modified:   linux/runner/CMakeLists.txt
+	modified:   linux/runner/main.cc
+	modified:   linux/runner/my_application.cc
+	modified:   linux/runner/my_application.h
+	modified:   macos/.gitignore
+	modified:   macos/Flutter/Flutter-Debug.xcconfig
+	modified:   macos/Flutter/Flutter-Release.xcconfig
+	modified:   macos/Flutter/GeneratedPluginRegistrant.swift
+	modified:   macos/Runner.xcodeproj/project.pbxproj
+	modified:   macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
+	modified:   macos/Runner/AppDelegate.swift
+	modified:   macos/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json
+	modified:   macos/Runner/Base.lproj/MainMenu.xib
+	modified:   macos/Runner/Configs/AppInfo.xcconfig
+	modified:   macos/Runner/Configs/Debug.xcconfig
+	modified:   macos/Runner/Configs/Release.xcconfig
+	modified:   macos/Runner/Configs/Warnings.xcconfig
+	modified:   macos/Runner/DebugProfile.entitlements
+	modified:   macos/Runner/Info.plist
+	modified:   macos/Runner/MainFlutterWindow.swift
+	modified:   macos/Runner/Release.entitlements
+	modified:   macos/RunnerTests/RunnerTests.swift
+	modified:   pubspec.yaml
+	modified:   reporte_auditoria_codigo.html
+	modified:   reporte_auditoria_codigo.txt
+	modified:   test/avistamiento_vm_test.dart
+	modified:   web/index.html
+	modified:   web/manifest.json
+	modified:   windows/.gitignore
+	modified:   windows/CMakeLists.txt
+	modified:   windows/flutter/CMakeLists.txt
+	modified:   windows/flutter/generated_plugin_registrant.cc
+	modified:   windows/flutter/generated_plugins.cmake
+	modified:   windows/runner/CMakeLists.txt
+	modified:   windows/runner/Runner.rc
+	modified:   windows/runner/flutter_window.cpp
+	modified:   windows/runner/flutter_window.h
+	modified:   windows/runner/main.cpp
+	modified:   windows/runner/resource.h
+	modified:   windows/runner/runner.exe.manifest
+	modified:   windows/runner/utils.cpp
+	modified:   windows/runner/utils.h
+	modified:   windows/runner/win32_window.cpp
+	modified:   windows/runner/win32_window.h
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	docs/
+	entrega/
+	test/helpers/
+	test/req01_autenticacion_prueba_unitaria_test.dart
+	test/req02_registro_usuario_prueba_unitaria_test.dart
+	test/req03_recuperar_contrasena_prueba_unitaria_test.dart
+
+no changes added to commit (use "git add" and/or "git commit -a")

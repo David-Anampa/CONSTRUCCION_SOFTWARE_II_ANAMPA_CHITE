@@ -1,0 +1,358 @@
+commit feecec2aa39810335032c32b4e01da085fa77425
+Author: David Anampa <da2022074268@virtual.upt.pe>
+Date:   Sun Oct 4 14:20:09 2026 -0500
+
+    Docs Unidad I terminado
+
+ .../Acta de Reuni\303\263n Nro. 01.pdf"            |   Bin 0 -> 359108 bytes
+ .../Acta de Reuni\303\263n Nro. 02.pdf"            |   Bin 0 -> 366288 bytes
+ .../Acta de Reuni\303\263n Nro. 03.pdf"            |   Bin 0 -> 361590 bytes
+ .../Acta de Reuni\303\263n Nro. 04.pdf"            |   Bin 0 -> 364981 bytes
+ .../Acta de Reuni\303\263n Nro. 05.pdf"            |   Bin 0 -> 368933 bytes
+ .../Acta de Reuni\303\263n Nro. 06.pdf"            |   Bin 0 -> 368225 bytes
+ .../Acta de Reuni\303\263n Nro. 07.pdf"            |   Bin 0 -> 369765 bytes
+ .../Acta de Reuni\303\263n Nro. 08.pdf"            |   Bin 0 -> 371048 bytes
+ .../Acta de Reuni\303\263n Nro. 09.pdf"            |   Bin 0 -> 364006 bytes
+ .../G04-Catalogo_de_Casos_de_Prueba_v5.xlsx        |   Bin 0 -> 131188 bytes
+ .../G04_Diccionario de Datos_SOS Mascota v2.0.pdf  |   Bin 0 -> 571026 bytes
+ .../G04_Especificaciones Funcionales.pdf           |   Bin 0 -> 3936587 bytes
+ .../G04_Estandares_Programacion.pdf                |   Bin 0 -> 390586 bytes
+ .../G04_FD07-Informe AGIL-SCRUM de Proyecto.pdf    |   Bin 0 -> 404521 bytes
+ .../Anexos del Proyecto/G04_Informe Ejecutivo.pdf  |   Bin 0 -> 5900828 bytes
+ .../G04_Informe-GitHub_Estudiantes.docx.pdf        |   Bin 0 -> 425102 bytes
+ ...04_Informe_Plan_de_Iteracion_SOS_Mascota v2.pdf |   Bin 0 -> 8597813 bytes
+ ...Informe_Plan_de_Mantenimiento_SOS_Mascotav2.pdf |   Bin 0 -> 444317 bytes
+ .../G04_Informe_Plan_de_Riesgos_SOS_Mascotav2.pdf  |   Bin 0 -> 366036 bytes
+ ...isi\303\263n_C\303\263digo_Anampa_Chite_v2.pdf" |   Bin 0 -> 3086084 bytes
+ ..._PRESENTACION INFORME EJECTUVO_ANAMPA_CHITE.pdf | 67835 +++++++++++++++++++
+ .../G04_Plan de Despliegue_SOS Mascota v2.pdf      |   Bin 0 -> 452250 bytes
+ ..._Plan de Pruebas de Software_SOS Mascota v4.pdf |   Bin 0 -> 628027 bytes
+ ...\303\263n de Sprints Backlog_SOS Mascotav2.pdf" |   Bin 0 -> 480205 bytes
+ .../G04_Trazabilidad Implementaci\303\263n.xlsx"   |   Bin 0 -> 12018 bytes
+ .../Codigo Fuente/Link_Codigo_SOSMascota.txt       |     2 +
+ .../G04_FD01_Informe Factibilidad Proyecto.pdf     |   Bin 0 -> 554847 bytes
+ ...04_FD02_Informe de Visi\303\263n y Alcance.pdf" |   Bin 0 -> 527687 bytes
+ .../Formatos de Proyecto/G04_FD03_Informe SRS.pdf  |   Bin 0 -> 5469464 bytes
+ .../Formatos de Proyecto/G04_FD04_Informe SAD.pdf  |   Bin 0 -> 4391880 bytes
+ .../G04_FD05_Informe ProyectoFinal.pdf             |   Bin 0 -> 581565 bytes
+ ...6_Propuestas_Proyecto_Investigaci\303\263n.pdf" |   Bin 0 -> 691360 bytes
+ .../Link del video Funcionalidad.txt               |     1 +
+ 33 files changed, 67838 insertions(+)
+
+commit 5ed88933e2ef93a9ab8b07f306c3305f373ffffb
+Author: David Anampa <da2022074268@virtual.upt.pe>
+Date:   Sat Oct 3 13:51:50 2026 -0500
+
+    docs y refactor: auditoria de codigo, refactorizaciones y documentacion tecnica Unidad I
+
+ .../DICCIONARIO_DE_DATOS_SOS_MASCOTA.md"           |  508 +++++++++
+ .../INFORME_LABORATORIO_01_REVISION_CODIGO.md"     |  580 ++++++++++
+ .../PLANIFICACION_SPRINTS_SOS_MASCOTA.md"          |  376 ++++++
+ .../PLAN_DE_DESPLIEGUE_SOS_MASCOTA.md"             |  371 ++++++
+ .../PLAN_DE_ITERACION_SOS_MASCOTA.md"              | 1205 ++++++++++++++++++++
+ .../PLAN_DE_MANTENIMIENTO_SOS_MASCOTA.md"          |  373 ++++++
+ .../PLAN_DE_PRUEBAS_SOS_MASCOTA.md"                |  476 ++++++++
+ .../PLAN_DE_RIESGOS_SOS_MASCOTA.md"                |  422 +++++++
+ "C\303\263digo Fuente/lib/app.dart"                |   26 +-
+ "C\303\263digo Fuente/lib/main.dart"               |   13 +-
+ .../lib/modelo/adminusuario_model.dart"            |  133 +--
+ .../lib/modelo/avistamiento.dart"                  |    6 +-
+ .../lib/modelo/reporte_mascota.dart"               |   38 +-
+ "C\303\263digo Fuente/lib/modelo/usuario.dart"     |   14 +-
+ .../lib/servicios/api_dni_servicio.dart"           |   29 +-
+ .../lib/servicios/auth_servicio.dart"              |   26 +-
+ .../lib/servicios/notificacion_servicio.dart"      |  193 ++--
+ .../lib/servicios/servicio_tflite.dart"            |  109 +-
+ "C\303\263digo Fuente/lib/utils/imagen_util.dart"  |   80 ++
+ .../lib/vista/auth/pantalla_login.dart"            |   16 -
+ .../lib/vista/auth/pantalla_registro copy.dart"    |  235 ----
+ .../lib/vista/mapa/pantalla_mapa_interactivo.dart" |    3 +-
+ .../lib/vista/reportes/pantalla_mis_reportes.dart" |   33 +-
+ .../lib/vista/usuario/pantalla_comentarios.dart"   |   32 +-
+ .../vistamodelo/admin/AdminEstadisticas_vm.dart"   |   97 +-
+ .../lib/vistamodelo/admin/admin_vm.dart"           |   49 +-
+ .../lib/vistamodelo/admin/adminusuario_vm.dart"    |  116 +-
+ .../lib/vistamodelo/auth/login_vm.dart"            |   31 +-
+ .../lib/vistamodelo/auth/registro_vm copy.dart"    |  142 ---
+ .../lib/vistamodelo/auth/registro_vm.dart"         |   10 +-
+ .../comentarios/comentarios_viewmodel.dart"        |    5 +-
+ .../lib/vistamodelo/reportes/avistamiento_vm.dart" |  157 ++-
+ .../lib/vistamodelo/reportes/reporte_vm.dart"      |  127 +--
+ .../reporte_auditoria_codigo.html"                 |  850 ++++++++++++++
+ .../reporte_auditoria_codigo.txt"                  |  266 +++++
+ 35 files changed, 6183 insertions(+), 964 deletions(-)
+
+commit 56d366ce915afa7afc914810ced5496f9e7a6562
+Author: Danilo314 <102675832+Danilo314@users.noreply.github.com>
+Date:   Tue Sep 29 22:43:07 2026 -0500
+
+    Update team members in README.md
+
+ README.md | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+commit fd80023df1b28c73fb53df28839fb996bb356069
+Author: David Anampa <da2022074268@virtual.upt.pe>
+Date:   Tue Sep 29 22:29:24 2026 -0500
+
+    feat: Unidad I - SOS Mascota (codigo fuente Flutter/Firebase + documentacion)
+
+ .../G04-Catalogo_de_Casos_de_Prueba_v5.xlsx"       |  Bin 0 -> 162571 bytes
+ .../G04_Casos de Prueba.docx"                      |  Bin 0 -> 364863 bytes
+ .../G04_Casos de Prueba.pdf"                       |  Bin 0 -> 592805 bytes
+ ...b.03_Casos de Prueba _ Catalogo de prueba.docx" |  Bin 0 -> 7673694 bytes
+ ...ab.03_Casos de Prueba _ Catalogo de prueba.pdf" |  Bin 0 -> 2324401 bytes
+ .../.firebase/hosting.YnVpbGRcd2Vi.cache"          |   59 ++
+ "C\303\263digo Fuente/.firebaserc"                 |    5 +
+ "C\303\263digo Fuente/.gitignore"                  |  114 ++
+ "C\303\263digo Fuente/.metadata"                   |   45 +
+ "C\303\263digo Fuente/README.md"                   |   16 +
+ "C\303\263digo Fuente/analysis_options.yaml"       |   28 +
+ "C\303\263digo Fuente/android/.gitignore"          |   14 +
+ .../android/app/build.gradle.kts"                  |   83 ++
+ .../android/app/google-services.json"              |   29 +
+ .../android/app/proguard-rules.pro"                |   13 +
+ .../android/app/src/debug/AndroidManifest.xml"     |    7 +
+ .../android/app/src/main/AndroidManifest.xml"      |   46 +
+ .../com/example/sos_mascotas/MainActivity.kt"      |    5 +
+ .../res/drawable-hdpi/ic_launcher_foreground.png"  |  Bin 0 -> 9517 bytes
+ .../app/src/main/res/drawable-hdpi/splash.png"     |  Bin 0 -> 113919 bytes
+ .../res/drawable-mdpi/ic_launcher_foreground.png"  |  Bin 0 -> 5482 bytes
+ .../app/src/main/res/drawable-mdpi/splash.png"     |  Bin 0 -> 34687 bytes
+ .../app/src/main/res/drawable-v21/background.png"  |  Bin 0 -> 69 bytes
+ .../main/res/drawable-v21/launch_background.xml"   |    9 +
+ .../res/drawable-xhdpi/ic_launcher_foreground.png" |  Bin 0 -> 15269 bytes
+ .../app/src/main/res/drawable-xhdpi/splash.png"    |  Bin 0 -> 213594 bytes
+ .../drawable-xxhdpi/ic_launcher_foreground.png"    |  Bin 0 -> 31813 bytes
+ .../app/src/main/res/drawable-xxhdpi/splash.png"   |  Bin 0 -> 493021 bytes
+ .../drawable-xxxhdpi/ic_launcher_foreground.png"   |  Bin 0 -> 55252 bytes
+ .../app/src/main/res/drawable-xxxhdpi/splash.png"  |  Bin 0 -> 850540 bytes
+ .../app/src/main/res/drawable/background.png"      |  Bin 0 -> 69 bytes
+ .../src/main/res/drawable/launch_background.xml"   |    9 +
+ .../main/res/mipmap-anydpi-v26/ic_launcher.xml"    |    9 +
+ .../app/src/main/res/mipmap-hdpi/ic_launcher.png"  |  Bin 0 -> 3324 bytes
+ .../app/src/main/res/mipmap-mdpi/ic_launcher.png"  |  Bin 0 -> 1957 bytes
+ .../app/src/main/res/mipmap-xhdpi/ic_launcher.png" |  Bin 0 -> 4669 bytes
+ .../src/main/res/mipmap-xxhdpi/ic_launcher.png"    |  Bin 0 -> 8086 bytes
+ .../src/main/res/mipmap-xxxhdpi/ic_launcher.png"   |  Bin 0 -> 12370 bytes
+ .../app/src/main/res/values-night-v31/styles.xml"  |   21 +
+ .../app/src/main/res/values-night/styles.xml"      |   22 +
+ .../app/src/main/res/values-v31/styles.xml"        |   21 +
+ .../android/app/src/main/res/values/colors.xml"    |    4 +
+ .../android/app/src/main/res/values/styles.xml"    |   22 +
+ .../android/app/src/profile/AndroidManifest.xml"   |    7 +
+ "C\303\263digo Fuente/android/build.gradle.kts"    |   32 +
+ "C\303\263digo Fuente/android/gradle.properties"   |    4 +
+ .../gradle/wrapper/gradle-wrapper.properties"      |    5 +
+ "C\303\263digo Fuente/android/settings.gradle.kts" |   28 +
+ "C\303\263digo Fuente/assets/Video/video.mp4"      |  Bin 0 -> 5726347 bytes
+ "C\303\263digo Fuente/assets/avatars/cat.png"      |  Bin 0 -> 27032 bytes
+ "C\303\263digo Fuente/assets/avatars/gamer.png"    |  Bin 0 -> 36343 bytes
+ "C\303\263digo Fuente/assets/avatars/girl.png"     |  Bin 0 -> 42755 bytes
+ "C\303\263digo Fuente/assets/avatars/man.png"      |  Bin 0 -> 36059 bytes
+ "C\303\263digo Fuente/assets/avatars/panda.png"    |  Bin 0 -> 30664 bytes
+ "C\303\263digo Fuente/assets/avatars/woman.png"    |  Bin 0 -> 38218 bytes
+ "C\303\263digo Fuente/assets/icono/logo.png"       |  Bin 0 -> 441851 bytes
+ "C\303\263digo Fuente/assets/icono/logo2.png"      |  Bin 0 -> 890996 bytes
+ .../assets/imagen/ANIMALCARE.jpeg"                 |  Bin 0 -> 7811 bytes
+ "C\303\263digo Fuente/assets/imagen/Amistad.png"   |  Bin 0 -> 2821271 bytes
+ "C\303\263digo Fuente/assets/imagen/HOSPITAL.jpeg" |  Bin 0 -> 7225 bytes
+ .../assets/imagen/Registraavistamiento.png"        |  Bin 0 -> 2506480 bytes
+ .../assets/imagen/Reportamascota.png"              |  Bin 0 -> 2681282 bytes
+ "C\303\263digo Fuente/assets/imagen/imagen1.png"   |  Bin 0 -> 376461 bytes
+ "C\303\263digo Fuente/assets/imagen/imagen10.jpg"  |  Bin 0 -> 50260 bytes
+ "C\303\263digo Fuente/assets/imagen/imagen11.jpg"  |  Bin 0 -> 43548 bytes
+ "C\303\263digo Fuente/assets/imagen/imagen12.avif" |  Bin 0 -> 50841 bytes
+ "C\303\263digo Fuente/assets/imagen/imagen2.jpeg"  |  Bin 0 -> 10418 bytes
+ "C\303\263digo Fuente/assets/imagen/imagen3.webp"  |  Bin 0 -> 57622 bytes
+ "C\303\263digo Fuente/assets/imagen/imagen4.jpeg"  |  Bin 0 -> 14446 bytes
+ "C\303\263digo Fuente/assets/imagen/imagen5.avif"  |  Bin 0 -> 17900 bytes
+ "C\303\263digo Fuente/assets/imagen/imagen6.avif"  |  Bin 0 -> 26598 bytes
+ "C\303\263digo Fuente/assets/imagen/imagen7.png"   |  Bin 0 -> 2566099 bytes
+ "C\303\263digo Fuente/assets/imagen/imagen8.webp"  |  Bin 0 -> 72354 bytes
+ "C\303\263digo Fuente/assets/imagen/imagen9.jpg"   |  Bin 0 -> 51360 bytes
+ .../assets/model/animales.tflite"                  |  Bin 0 -> 8873964 bytes
+ .../assets/model/extractor_animales.tflite"        |  Bin 0 -> 8858556 bytes
+ "C\303\263digo Fuente/firebase.json"               |   25 +
+ "C\303\263digo Fuente/firestore.indexes.json"      |   92 ++
+ "C\303\263digo Fuente/firestore.rules"             |  124 +++
+ "C\303\263digo Fuente/ios/.gitignore"              |   34 +
+ .../ios/Flutter/AppFrameworkInfo.plist"            |   26 +
+ "C\303\263digo Fuente/ios/Flutter/Debug.xcconfig"  |    1 +
+ .../ios/Flutter/Release.xcconfig"                  |    1 +
+ .../ios/Runner.xcodeproj/project.pbxproj"          |  616 +++++++++++
+ .../xcshareddata/xcschemes/Runner.xcscheme"        |  101 ++
+ .../ios/Runner/AppDelegate.swift"                  |   13 +
+ .../AppIcon.appiconset/Contents.json"              |    1 +
+ .../AppIcon.appiconset/Icon-App-1024x1024@1x.png"  |  Bin 0 -> 328277 bytes
+ .../AppIcon.appiconset/Icon-App-20x20@1x.png"      |  Bin 0 -> 687 bytes
+ .../AppIcon.appiconset/Icon-App-20x20@2x.png"      |  Bin 0 -> 1547 bytes
+ .../AppIcon.appiconset/Icon-App-20x20@3x.png"      |  Bin 0 -> 2612 bytes
+ .../AppIcon.appiconset/Icon-App-29x29@1x.png"      |  Bin 0 -> 1077 bytes
+ .../AppIcon.appiconset/Icon-App-29x29@2x.png"      |  Bin 0 -> 2490 bytes
+ .../AppIcon.appiconset/Icon-App-29x29@3x.png"      |  Bin 0 -> 4195 bytes
+ .../AppIcon.appiconset/Icon-App-40x40@1x.png"      |  Bin 0 -> 1547 bytes
+ .../AppIcon.appiconset/Icon-App-40x40@2x.png"      |  Bin 0 -> 3699 bytes
+ .../AppIcon.appiconset/Icon-App-40x40@3x.png"      |  Bin 0 -> 6218 bytes
+ .../AppIcon.appiconset/Icon-App-50x50@1x.png"      |  Bin 0 -> 2062 bytes
+ .../AppIcon.appiconset/Icon-App-50x50@2x.png"      |  Bin 0 -> 4941 bytes
+ .../AppIcon.appiconset/Icon-App-57x57@1x.png"      |  Bin 0 -> 2485 bytes
+ .../AppIcon.appiconset/Icon-App-57x57@2x.png"      |  Bin 0 -> 5813 bytes
+ .../AppIcon.appiconset/Icon-App-60x60@2x.png"      |  Bin 0 -> 6218 bytes
+ .../AppIcon.appiconset/Icon-App-60x60@3x.png"      |  Bin 0 -> 11287 bytes
+ .../AppIcon.appiconset/Icon-App-72x72@1x.png"      |  Bin 0 -> 3324 bytes
+ .../AppIcon.appiconset/Icon-App-72x72@2x.png"      |  Bin 0 -> 8086 bytes
+ .../AppIcon.appiconset/Icon-App-76x76@1x.png"      |  Bin 0 -> 3525 bytes
+ .../AppIcon.appiconset/Icon-App-76x76@2x.png"      |  Bin 0 -> 8637 bytes
+ .../AppIcon.appiconset/Icon-App-83.5x83.5@2x.png"  |  Bin 0 -> 9994 bytes
+ .../LaunchBackground.imageset/Contents.json"       |   21 +
+ .../LaunchBackground.imageset/background.png"      |  Bin 0 -> 69 bytes
+ .../LaunchImage.imageset/Contents.json"            |   23 +
+ .../LaunchImage.imageset/LaunchImage.png"          |  Bin 0 -> 34687 bytes
+ .../LaunchImage.imageset/LaunchImage@2x.png"       |  Bin 0 -> 213594 bytes
+ .../LaunchImage.imageset/LaunchImage@3x.png"       |  Bin 0 -> 493021 bytes
+ .../LaunchImage.imageset/README.md"                |    5 +
+ .../ios/Runner/Base.lproj/LaunchScreen.storyboard" |   44 +
+ .../ios/Runner/Base.lproj/Main.storyboard"         |   26 +
+ "C\303\263digo Fuente/ios/Runner/Info.plist"       |   51 +
+ .../ios/Runner/Runner-Bridging-Header.h"           |    1 +
+ .../ios/RunnerTests/RunnerTests.swift"             |   12 +
+ "C\303\263digo Fuente/lib/app.dart"                |  120 +++
+ "C\303\263digo Fuente/lib/firebase_options.dart"   |   62 ++
+ "C\303\263digo Fuente/lib/main.dart"               |  143 +++
+ .../lib/modelo/AdminEstadisticas.dart"             |  126 +++
+ .../lib/modelo/AdminNotificacion.dart"             |  126 +++
+ .../lib/modelo/AdminReporte.dart"                  |  118 +++
+ .../lib/modelo/adminusuario_model.dart"            |  194 ++++
+ .../lib/modelo/avistamiento.dart"                  |   59 ++
+ .../lib/modelo/comentario_model.dart"              |   56 +
+ .../lib/modelo/notificacion.dart"                  |   46 +
+ .../lib/modelo/reporte_mascota.dart"               |  100 ++
+ "C\303\263digo Fuente/lib/modelo/usuario.dart"     |   76 ++
+ .../lib/servicios/api_dni_servicio.dart"           |   34 +
+ .../lib/servicios/auth_servicio.dart"              |   56 +
+ .../lib/servicios/firestore_servicio.dart"         |   19 +
+ .../lib/servicios/notificacion_servicio.dart"      |  175 +++
+ .../lib/servicios/servicio_tflite.dart"            |  110 ++
+ "C\303\263digo Fuente/lib/utils/auth_wrapper.dart" |  182 ++++
+ .../vista/admin/PantallaAdminEstadisticas.dart"    | 1100 +++++++++++++++++++
+ .../vista/admin/pantallaAdminNotificaciones.dart"  |  721 +++++++++++++
+ .../lib/vista/admin/pantallaAdminReporte.dart"     |  632 +++++++++++
+ .../lib/vista/admin/pantalla_adminusuarios.dart"   |  484 +++++++++
+ .../lib/vista/admin/pantalla_inicio_admin.dart"    |  363 +++++++
+ .../lib/vista/admin/pantalla_perfil_admin.dart"    |  602 +++++++++++
+ .../lib/vista/admin/pantalla_registro_admin.dart"  |  258 +++++
+ .../lib/vista/auth/pantalla_login.dart"            |  223 ++++
+ .../lib/vista/auth/pantalla_recuperar.dart"        |  287 +++++
+ .../lib/vista/auth/pantalla_registro copy.dart"    |  235 ++++
+ .../lib/vista/auth/pantalla_registro.dart"         |  180 ++++
+ .../vista/auth/pantalla_registro_especial.dart"    |   40 +
+ .../lib/vista/auth/pantalla_verifica_email.dart"   |  159 +++
+ .../lib/vista/chat/pantalla_chat.dart"             |  611 +++++++++++
+ .../lib/vista/chat/pantalla_chats_activos.dart"    |  376 +++++++
+ .../lib/vista/mapa/pantalla_mapa_interactivo.dart" |  383 +++++++
+ .../lib/vista/reportes/pantalla_avistamiento.dart" |  605 +++++++++++
+ .../reportes/pantalla_comentarios_reporte.dart"    |  752 +++++++++++++
+ .../vista/reportes/pantalla_detalle_completo.dart" |  994 +++++++++++++++++
+ .../vista/reportes/pantalla_detalle_reporte.dart"  |   40 +
+ .../lib/vista/reportes/pantalla_mapa_osm.dart"     |  269 +++++
+ .../lib/vista/reportes/pantalla_mis_reportes.dart" |  839 +++++++++++++++
+ .../vista/reportes/pantalla_reporte_mascota.dart"  | 1117 ++++++++++++++++++++
+ .../lib/vista/reportes/pantalla_ver_reportes.dart" |  345 ++++++
+ .../lib/vista/reportes/video_recorte_page.dart"    |   94 ++
+ .../lib/vista/usuario/pantalla_comentarios.dart"   |  934 ++++++++++++++++
+ .../lib/vista/usuario/pantalla_inicio.dart"        |  508 +++++++++
+ .../lib/vista/usuario/pantalla_notificacion.dart"  |  349 ++++++
+ .../lib/vista/usuario/pantalla_perfil.dart"        |  470 ++++++++
+ .../lib/vista/usuario/replies_page.dart"           |  366 +++++++
+ .../vistamodelo/admin/AdminEstadisticas_vm.dart"   |  501 +++++++++
+ .../vistamodelo/admin/AdminNotificaciones_vm.dart" |  346 ++++++
+ .../lib/vistamodelo/admin/AdminReportes_vm.dart"   |  339 ++++++
+ .../lib/vistamodelo/admin/admin_vm.dart"           |  153 +++
+ .../lib/vistamodelo/admin/adminusuario_vm.dart"    |  211 ++++
+ .../lib/vistamodelo/auth/login_vm.dart"            |  127 +++
+ .../lib/vistamodelo/auth/recuperar_vm.dart"        |   62 ++
+ .../lib/vistamodelo/auth/registro_vm copy.dart"    |  142 +++
+ .../lib/vistamodelo/auth/registro_vm.dart"         |   98 ++
+ .../comentarios/comentarios_viewmodel.dart"        |   16 +
+ .../vistamodelo/notificacion/notificacion_vm.dart" |   75 ++
+ .../lib/vistamodelo/reportes/avistamiento_vm.dart" |  264 +++++
+ .../lib/vistamodelo/reportes/reporte_vm.dart"      |  172 +++
+ .../lib/vistamodelo/usuario/perfil_vm.dart"        |   99 ++
+ .../lib/widgets/image_background.dart"             |   29 +
+ .../lib/widgets/video_background.dart"             |   61 ++
+ "C\303\263digo Fuente/linux/.gitignore"            |    1 +
+ "C\303\263digo Fuente/linux/CMakeLists.txt"        |  128 +++
+ .../linux/flutter/CMakeLists.txt"                  |   88 ++
+ .../linux/flutter/generated_plugin_registrant.cc"  |   19 +
+ .../linux/flutter/generated_plugin_registrant.h"   |   15 +
+ .../linux/flutter/generated_plugins.cmake"         |   26 +
+ "C\303\263digo Fuente/linux/runner/CMakeLists.txt" |   26 +
+ "C\303\263digo Fuente/linux/runner/main.cc"        |    6 +
+ .../linux/runner/my_application.cc"                |  130 +++
+ .../linux/runner/my_application.h"                 |   18 +
+ "C\303\263digo Fuente/macos/.gitignore"            |    7 +
+ .../macos/Flutter/Flutter-Debug.xcconfig"          |    1 +
+ .../macos/Flutter/Flutter-Release.xcconfig"        |    1 +
+ .../macos/Flutter/GeneratedPluginRegistrant.swift" |   40 +
+ .../macos/Runner.xcodeproj/project.pbxproj"        |  705 ++++++++++++
+ .../xcshareddata/xcschemes/Runner.xcscheme"        |   99 ++
+ .../macos/Runner/AppDelegate.swift"                |   13 +
+ .../AppIcon.appiconset/Contents.json"              |   68 ++
+ .../AppIcon.appiconset/app_icon_1024.png"          |  Bin 0 -> 102994 bytes
+ .../AppIcon.appiconset/app_icon_128.png"           |  Bin 0 -> 5680 bytes
+ .../AppIcon.appiconset/app_icon_16.png"            |  Bin 0 -> 520 bytes
+ .../AppIcon.appiconset/app_icon_256.png"           |  Bin 0 -> 14142 bytes
+ .../AppIcon.appiconset/app_icon_32.png"            |  Bin 0 -> 1066 bytes
+ .../AppIcon.appiconset/app_icon_512.png"           |  Bin 0 -> 36406 bytes
+ .../AppIcon.appiconset/app_icon_64.png"            |  Bin 0 -> 2218 bytes
+ .../macos/Runner/Base.lproj/MainMenu.xib"          |  343 ++++++
+ .../macos/Runner/Configs/AppInfo.xcconfig"         |   14 +
+ .../macos/Runner/Configs/Debug.xcconfig"           |    2 +
+ .../macos/Runner/Configs/Release.xcconfig"         |    2 +
+ .../macos/Runner/Configs/Warnings.xcconfig"        |   13 +
+ .../macos/Runner/DebugProfile.entitlements"        |   12 +
+ "C\303\263digo Fuente/macos/Runner/Info.plist"     |   32 +
+ .../macos/Runner/MainFlutterWindow.swift"          |   15 +
+ .../macos/Runner/Release.entitlements"             |    8 +
+ .../macos/RunnerTests/RunnerTests.swift"           |   12 +
+ "C\303\263digo Fuente/pubspec.yaml"                |   91 ++
+ .../test/avistamiento_vm_test.dart"                |   49 +
+ "C\303\263digo Fuente/web/favicon.png"             |  Bin 0 -> 917 bytes
+ "C\303\263digo Fuente/web/icons/Icon-192.png"      |  Bin 0 -> 5292 bytes
+ "C\303\263digo Fuente/web/icons/Icon-512.png"      |  Bin 0 -> 8252 bytes
+ .../web/icons/Icon-maskable-192.png"               |  Bin 0 -> 5594 bytes
+ .../web/icons/Icon-maskable-512.png"               |  Bin 0 -> 20998 bytes
+ "C\303\263digo Fuente/web/index.html"              |   38 +
+ "C\303\263digo Fuente/web/manifest.json"           |   35 +
+ "C\303\263digo Fuente/windows/.gitignore"          |   17 +
+ "C\303\263digo Fuente/windows/CMakeLists.txt"      |  108 ++
+ .../windows/flutter/CMakeLists.txt"                |  109 ++
+ .../flutter/generated_plugin_registrant.cc"        |   32 +
+ .../windows/flutter/generated_plugin_registrant.h" |   15 +
+ .../windows/flutter/generated_plugins.cmake"       |   32 +
+ .../windows/runner/CMakeLists.txt"                 |   40 +
+ "C\303\263digo Fuente/windows/runner/Runner.rc"    |  121 +++
+ .../windows/runner/flutter_window.cpp"             |   71 ++
+ .../windows/runner/flutter_window.h"               |   33 +
+ "C\303\263digo Fuente/windows/runner/main.cpp"     |   43 +
+ "C\303\263digo Fuente/windows/runner/resource.h"   |   16 +
+ .../windows/runner/resources/app_icon.ico"         |  Bin 0 -> 33772 bytes
+ .../windows/runner/runner.exe.manifest"            |   14 +
+ "C\303\263digo Fuente/windows/runner/utils.cpp"    |   65 ++
+ "C\303\263digo Fuente/windows/runner/utils.h"      |   19 +
+ .../windows/runner/win32_window.cpp"               |  288 +++++
+ .../windows/runner/win32_window.h"                 |  102 ++
+ .../G04_Lab.02_Especificaciones_Funcionales.docx   |  Bin 0 -> 3891035 bytes
+ .../G04_Lab.02_Especificaciones_Funcionales.pdf    |  Bin 0 -> 2599123 bytes
+ .../G04_Trazabilidad Implementaci\303\263n.xlsx"   |  Bin 0 -> 12018 bytes
+ .../Informe_Ejecutivo_SOSMascota.docx              |  Bin 0 -> 6598396 bytes
+ .../Informe_Ejecutivo_SOSMascota.pdf               |  Bin 0 -> 2041751 bytes
+ .../G03-Planificacion de Sprints Backlogs.docx"    |  Bin 0 -> 47941 bytes
+ .../G03-Planificacion de Sprints Backlogs.pdf"     |  Bin 0 -> 279650 bytes
+ .../G04_Plan de Iteraci\303\263n.docx"             |  Bin 0 -> 1879753 bytes
+ .../G04_Plan de Iteraci\303\263n.pdf"              |  Bin 0 -> 1205527 bytes
+ README.md                                          |  206 ++++
+ ...Lab.01 - Revisi\303\263n de C\303\263digo.docx" |  Bin 0 -> 4924668 bytes
+ ..._Lab.01 - Revisi\303\263n de C\303\263digo.pdf" |  Bin 0 -> 2916228 bytes
+ 258 files changed, 24095 insertions(+)
