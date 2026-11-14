@@ -1,0 +1,68 @@
+name: demo_avistamiento
+description: "Demo independiente del módulo de registro de avistamientos — SOS Mascota"
+
+# Este proyecto no se publica en pub.dev
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Firebase: autenticación, base de datos y almacenamiento
+  firebase_core: ^4.1.0
+  firebase_auth: ^6.0.2
+  cloud_firestore: ^6.0.1
+  firebase_storage: ^13.0.1
+
+  # Notificaciones push (misma lógica que el proyecto principal)
+  firebase_messaging: ^16.0.3
+  googleapis_auth: ^2.0.0
+  flutter_local_notifications: ^19.4.2
+
+  # Manejo de estado con Provider (igual que el proyecto principal)
+  provider: ^6.1.5+1
+
+  # Selección de imágenes desde galería o cámara
+  image_picker: ^1.2.0
+
+  # Compresión de imágenes antes de subir a Storage
+  flutter_image_compress: ^2.3.0
+
+  # Directorio temporal para guardar imágenes comprimidas
+  path_provider: ^2.1.2
+
+  # Mapa OpenStreetMap para seleccionar ubicación
+  flutter_map: ^8.2.2
+  latlong2: ^0.9.1
+
+  # Peticiones HTTP (geocodificación Nominatim + descarga de imágenes)
+  http: ^1.5.0
+
+  # Modelo TFLite para validar que la imagen contiene un animal
+  tflite_flutter: ^0.11.0
+
+  # Procesamiento de imágenes para TFLite
+  image: ^4.0.0
+
+  # Utilidades
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    # Clave de cuenta de servicio para FCM
+    - assets/keys/service_account.json
+    # Modelos TFLite para detección y comparación de animales
+    - assets/model/animales.tflite
+    - assets/model/extractor_animales.tflite
